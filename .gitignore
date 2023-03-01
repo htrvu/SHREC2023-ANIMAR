@@ -1,0 +1,8 @@
+__pycache__
+data/*
+!data/*.ipynb
+!data/csv
+!*.py
+!*.md
+exps/
+temps/
