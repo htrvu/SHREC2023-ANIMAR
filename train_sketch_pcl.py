@@ -2,8 +2,9 @@ import torch
 from torch.utils.data import DataLoader
 from pytorch_metric_learning.losses import NTXentLoss, CrossBatchMemory
 
-from curvenet.dataset import SHREC23_PointCloudData_ImageQuery
-from curvenet.models import CurveNet
+from pointcloud.dataset import SHREC23_PointCloudData_ImageQuery
+from pointcloud.curvenet import CurveNet
+from pointcloud.pointmlp import PointMLP, PointMLPElite
 
 from common.models import ResNetExtractor, EfficientNetExtractor, MLP
 from common.test import test_loop
@@ -18,7 +19,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--pcl-model', type=str,
-                    default='curvenet', choices=['curvenet', 'pointmlp'], help='Model for point cloud feature extraction')
+                    default='curvenet', choices=['curvenet', 'pointmlp', 'pointmlpelite'], help='Model for point cloud feature extraction')
 parser.add_argument('--cnn-backbone', type=str, default='efficientnet_b2',
                     choices=[*ResNetExtractor.arch.keys(), *EfficientNetExtractor.arch.keys()],  help='Model for sketch feature extraction')
 
@@ -67,6 +68,10 @@ os.mkdir(weights_path)
 if args.pcl_model == 'curvenet':
     obj_extractor = CurveNet(device=device)
 elif args.pcl_model == 'pointmlp':
+    obj_extractor = PointMLP(device=device)
+elif args.pcl_model == 'pointmlpelite':
+    obj_extractor = PointMLPElite(device=device)
+else:
     raise NotImplementedError
 
 obj_embedder = MLP(obj_extractor, latent_dim=latent_dim).to(device)

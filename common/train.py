@@ -16,7 +16,7 @@ class PerModality(BaseReducer):
         skt_loss = torch.mean(losses[a1 >= halfway])
         return (obj_loss + skt_loss) / 2
 
-def train_loop(obj_embedder, query_embedder, dl, obj_input, query_input, cbm_query, cbm_object, obj_optimizer, query_optimizer, device):
+def train_loop(obj_embedder, query_embedder, dl, obj_input, query_input, cbm_query, cbm_object, obj_optimizer, query_optimizer, device, use_cross_batch_mem=False):
     start_time = time.time()
     loss_avg = 0
     progress_bar = tqdm(enumerate(dl), total=len(dl))
@@ -31,7 +31,7 @@ def train_loop(obj_embedder, query_embedder, dl, obj_input, query_input, cbm_que
 
         labels = torch.cat([torch.arange(emb_len//2), torch.arange(emb_len//2)])
 
-        if step > 2:
+        if step > 2 and use_cross_batch_mem:
             enqueue_idx = torch.arange(emb_len//2, emb_len)
             # enqueue_mask: A boolean tensor where enqueue_mask[i] is True
             enqueue_mask = torch.zeros(emb_len, dtype=torch.bool)
@@ -51,6 +51,7 @@ def train_loop(obj_embedder, query_embedder, dl, obj_input, query_input, cbm_que
         else:
             contra_loss = NTXentLoss(reducer=PerModality(emb_len))
             loss = contra_loss(emb, labels)
+
         obj_optimizer.zero_grad()
         query_optimizer.zero_grad()
         loss.backward()

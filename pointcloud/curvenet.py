@@ -645,11 +645,11 @@ class CurveNet(nn.Module):
 
 if __name__ == "__main__":
     from dataset import PointCloudData
-    ds = PointCloudData("data/ANIMAR_Preliminary_Data/3D_Models")
+    ds = PointCloudData("data/SketchANIMAR2023/3D_Model_References/References")
     dl = data.DataLoader(ds, batch_size=4)
 
     device = "cpu"
-    curvenet = CurveNet().to(device)
+    curvenet = CurveNet(device).to(device)
 
     batch = next(iter(dl))
     inputs = batch["pointcloud"]    # shape (batch_size, 3, 1024)

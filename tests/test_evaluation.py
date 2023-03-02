@@ -65,8 +65,8 @@ def test_image_ringview():
 def test_txt_pcl():
 
     from torch.utils.data import DataLoader
-    from curvenet.dataset import SHREC23_PointCloudData_TextQuery
-    from curvenet.models import CurveNet
+    from pointcloud.dataset import SHREC23_PointCloudData_TextQuery
+    from pointcloud.curvenet import CurveNet
     from common.models import BertExtractor, MLP
     import torch 
 
@@ -98,8 +98,8 @@ def test_txt_pcl():
 def test_image_pcl():
 
     from torch.utils.data import DataLoader
-    from curvenet.dataset import SHREC23_PointCloudData_ImageQuery
-    from curvenet.models import CurveNet
+    from pointcloud.dataset import SHREC23_PointCloudData_ImageQuery
+    from pointcloud.curvenet import CurveNet
     from common.models import ResNetExtractor, MLP
     import torch 
 
