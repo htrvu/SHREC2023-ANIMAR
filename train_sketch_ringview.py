@@ -34,6 +34,7 @@ parser.add_argument('--epochs', type=int, default=10, help='Num of epochs')
 parser.add_argument('--num-workers', type=int, default=1, help='Num of workers')
 parser.add_argument('--lr-obj', type=float, default=1e-4, help='Learning rate for object\'s network')
 parser.add_argument('--lr-skt', type=float, default=1e-4, help='Learning rate for sketch\'s network')
+parser.add_argument('--use-cbm', type=bool, default=False, help='Use cross batch memory in training')
 
 parser.add_argument('--latent-dim', type=int, default=128, help='Latent dimensions of common embedding space')
 
