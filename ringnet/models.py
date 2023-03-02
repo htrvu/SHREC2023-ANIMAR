@@ -9,14 +9,13 @@ class TransEncoderBlock(nn.Module):
     def __init__(self, feature_dim, num_heads, dropout, hidden_dim=None):
         super().__init__()
         self.mha = nn.MultiheadAttention(feature_dim, num_heads, dropout)
-        if hidden_dim is not None:
-            self.layernorm1 = nn.LayerNorm(feature_dim)
-            self.layernorm2 = nn.LayerNorm(feature_dim)
-            self.fc = nn.Sequential(
-                nn.Linear(feature_dim, hidden_dim),
-                nn.ReLU(),
-                nn.Linear(hidden_dim, feature_dim)
-            )
+        self.layernorm1 = nn.LayerNorm(feature_dim)
+        self.layernorm2 = nn.LayerNorm(feature_dim)
+        self.fc = nn.Sequential(
+            nn.Linear(feature_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, feature_dim)
+        )
     
     def forward(self, x):
         '''
@@ -24,13 +23,10 @@ class TransEncoderBlock(nn.Module):
         '''
         q = x
         mha_out, _ = self.mha(q, q, q)
-        if self.fc is not None:
-            x = self.layernorm1(x + mha_out)
-            fc_out = self.fc(x)
-            out = self.layernorm2(x + fc_out)
-            return out
-        else:
-            return mha_out
+        x = self.layernorm1(x + mha_out)
+        fc_out = self.fc(x)
+        out = self.layernorm2(x + fc_out)
+        return out
 
 class BaseRingExtractor(nn.Module):
     def __init__(self, view_cnn_backbone='resnet50', view_seq_embedder='bilstm', hidden_dim=512):
