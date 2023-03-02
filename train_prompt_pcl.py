@@ -2,8 +2,8 @@ import torch
 from torch.utils.data import DataLoader
 from pytorch_metric_learning.losses import NTXentLoss, CrossBatchMemory
 
-from curvenet.dataset import SHREC23_PointCloudData_TextQuery
-from curvenet.models import CurveNet
+from pointcloud.dataset import SHREC23_PointCloudData_TextQuery
+from pointcloud.curvenet import CurveNet
 
 from common.models import BertExtractor, MLP
 from common.test import test_loop
