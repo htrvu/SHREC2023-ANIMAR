@@ -1,12 +1,19 @@
 # SHREC23-ANIMAR
 
-## Install dependencies (if necessary)
+## Install dependencies
 
 Before installing the repo, we need to install the CUDA driver version >=11.6
+
+If necessary, you could create a conda env:
 
 ```bash
 $ conda env create -f animar.yml
 $ conda activate animar
+```
+Build for PointMLP:
+
+```bash
+$ pip install utils/pointnet2_ops_lib/.
 ```
 
 ## Dataset structure
@@ -45,11 +52,13 @@ Resources:
 Current available models:
 
 - CNN backbone: ResNet (`resnetXX`), EfficientNet (`efficientnet_bX`)
-- PCL model: CurveNet
+- PCL model: CurveNet (`curvenet`), PointMLP (`pointmlp`), PointMLPElite (`pointmlpelite`)
 - View sequence embedder: LSTM/BiLSTM (`bilstm`), Transformer Encoder (`mha`)
 - Ring sequence embedder: Transformer Encoder (support multi MHA layers)
 
 MLP for embedding to common space can be in the shinking (default) or expanding mode.
+
+**NOTE**. Cross Batch Memory in training is currently disabled. If you want to use it, let's set `use-cbm` to `True`.
 
 ### Point-cloud Method
 
@@ -74,12 +83,13 @@ python train_sketch_pcl.py \
     --latent-dim 256 \
     --output-path exps \
     --lr-obj 1e-4 \
-    --lr-skt 1e-4
+    --lr-skt 1e-4 \
+    --use-cbm False
 ```
-- The original baseline use ResNet50 backbone and Curvenet model.
-`*-backbone=resnet50`.
+- The original baseline use ResNet50 backbone and Curvenet model:
+`cnn-backbone=resnet50`, `pcl-model=curvenet`.
 
-The result of training process will be put inside folder `exps/pcl_exp_{num}`
+The result of training process will be put inside folder `exps/pcl_exp_{num}` (`num` is counted from 0)
 
 ### Ring-view method
 
@@ -106,16 +116,17 @@ python train_sketch_ringview.py \
     --epochs 50 \
     --latent-dim 256 \
     --output-path exps \
-    --lr-obj 1e-4 \
-    --lr-skt 1e-4 \
     --view-seq-embedder mha \
     --num-rings-mhas 2 \
-    --num-heads 4
+    --num-heads 4 \
+    --lr-obj 1e-4 \
+    --lr-skt 1e-4 \
+    --use-cbm False
 ```
 
 - The original baseline use ResNet50 backbone and LSTM + MHA (just a MHA layer, without any layernorm and skip connection): `*-backbone=resnet50`, `view-seq-embedder=bilstm`, `num-rings-mhas=1`.
 
-The result of training process will be put inside folder `exps/ringview_exp_{num}`
+The result of training process will be put inside folder `exps/ringview_exp_{num}` (`num` is counted from 0)
 
 ## Training for text-based (track 2)
 
