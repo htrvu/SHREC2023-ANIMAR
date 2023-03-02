@@ -33,6 +33,7 @@ parser.add_argument('--epochs', type=int, default=10, help='Num of epochs')
 parser.add_argument('--num-workers', type=int, default=1, help='Num of workers')
 parser.add_argument('--lr-obj', type=float, default=1e-4, help='Learning rate for object\'s network')
 parser.add_argument('--lr-skt', type=float, default=1e-4, help='Learning rate for sketch\'s network')
+parser.add_argument('--use-cbm', default=False, action='store_true', help='Use cross batch memory in training')
 
 parser.add_argument('--latent-dim', type=int, default=128, help='Latent dimensions of common embedding space')
 
@@ -122,7 +123,8 @@ for e in range(epoch):
                     cbm_query=cbm_query, cbm_object=cbm_object,
                     obj_optimizer=optimizer1, query_optimizer=optimizer2,
                     dl=train_dl,
-                    device=device)
+                    device=device,
+                    use_cross_batch_mem=args.use_cbm)
     print(f'Loss: {loss:.4f}')
     training_losses.append(loss)
 
