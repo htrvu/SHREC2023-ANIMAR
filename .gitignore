@@ -6,3 +6,5 @@ data/*
 !*.md
 exps/
 temps/
+*build*
+*egg-info*
