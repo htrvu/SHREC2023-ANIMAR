@@ -58,7 +58,7 @@ Current available models:
 
 MLP for embedding to common space can be in the shinking (default) or expanding mode.
 
-**NOTE**. Cross Batch Memory in training is currently disabled. If you want to use it, let's set `use-cbm` to `True`.
+**NOTE**. Cross Batch Memory in training is currently disabled. If you want to use it, let's add the flag `--use-cbm` in training commands.
 
 ### Point-cloud Method
 
@@ -83,8 +83,7 @@ python train_sketch_pcl.py \
     --latent-dim 256 \
     --output-path exps \
     --lr-obj 1e-4 \
-    --lr-skt 1e-4 \
-    --use-cbm False
+    --lr-skt 1e-4
 ```
 - The original baseline use ResNet50 backbone and Curvenet model:
 `cnn-backbone=resnet50`, `pcl-model=curvenet`.
@@ -92,8 +91,6 @@ python train_sketch_pcl.py \
 The result of training process will be put inside folder `exps/pcl_exp_{num}` (`num` is counted from 0)
 
 ### Ring-view method
-
-**WARNING.** Have not checked for EfficientNet backbone yet (out of memory error).
 
 The meaning and values of of arguments
 
@@ -120,8 +117,7 @@ python train_sketch_ringview.py \
     --num-rings-mhas 2 \
     --num-heads 4 \
     --lr-obj 1e-4 \
-    --lr-skt 1e-4 \
-    --use-cbm False
+    --lr-skt 1e-4
 ```
 
 - The original baseline use ResNet50 backbone and LSTM + MHA (just a MHA layer, without any layernorm and skip connection): `*-backbone=resnet50`, `view-seq-embedder=bilstm`, `num-rings-mhas=1`.
