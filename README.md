@@ -24,7 +24,7 @@ Resources:
 
 - Generated models (for RingView method, removed `depth` and `mask` folders): [GDrive](https://drive.google.com/file/d/1UsnawE_BLqK6vzJ0RGAa6KtXniJm3JkL/view?usp=sharing)
 
-- Cropped sketches: ...
+- Cropped sketches: [GDrive](https://drive.google.com/file/d/1AbaWwM0YP_7DLgOiP2U7tnV3OmsEfA0O/view?usp=share_link)
 
 ```
 ./
