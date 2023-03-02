@@ -1,0 +1,17 @@
+python train_sketch_ringview.py \
+    --view-cnn-backbone resnet18 \
+    --skt-cnn-backbone resnet18 \
+    --rings-path data/ANIMAR_Preliminary_Data/3D_Model_References/generated_models \
+    --num-rings 6 \
+    --skt-data-path data/ANIMAR_Preliminary_Data/Train/SketchQuery_Train \
+    --train-csv-path data/csv/train_skt_preliminary.csv \
+    --test-csv-path data/csv/test_skt_preliminary.csv \
+    --batch-size 1 \
+    --epochs 10 \
+    --latent-dim 64 \
+    --output-path exps \
+    --lr-obj 1e-4 \
+    --lr-skt 1e-4 \
+    --view-seq-embedder mha \
+    --num-rings-mhas 2 \
+    --num-heads 4
