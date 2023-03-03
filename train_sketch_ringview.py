@@ -24,7 +24,7 @@ parser.add_argument('--skt-cnn-backbone', type=str, default='efficientnet_b2',
                     choices=[*ResNetExtractor.arch.keys(), *EfficientNetExtractor.arch.keys()],  help='Model for sketch feature extraction')
 
 parser.add_argument('--rings-path', type=str, required=True, help='Path to parent folder of ringviews')
-parser.add_argument('--num-rings', type=int, default=6, help='Num of rings (from ring1 to)')
+parser.add_argument('--used-rings', type=str, default='0,1,2,3,4,5,6', help='Rings to be used for training')
 parser.add_argument('--skt-data-path', type=str, required=True, help='Path to 3D sketches folder')
 parser.add_argument('--train-csv-path', type=str, required=True, help='Path to CSV file of mapping object and sketch in training set')
 parser.add_argument('--test-csv-path', type=str, required=True, help='Path to CSV file of mapping object and sketch in test set')
@@ -59,6 +59,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 batch_size = args.batch_size
 latent_dim = args.latent_dim
 epoch = args.epochs
+ring_ids = [int(id) for id in args.used_rings.split(',')]
 
 # output folder
 output_path = args.output_path
@@ -81,7 +82,7 @@ os.mkdir(weights_path)
 view_cnn_backbone = args.view_cnn_backbone
 obj_extractor = Base3DObjectRingsExtractor(
     view_cnn_backbone=view_cnn_backbone,
-    num_rings=args.num_rings,
+    num_rings=len(ring_ids),
     view_seq_embedder=args.view_seq_embedder,
     num_mhas=args.num_rings_mhas,
     num_heads=args.num_heads,
@@ -100,15 +101,14 @@ else:
 query_embedder = MLP(query_extractor, latent_dim=latent_dim).to(device)
 
 # datasets
-# 'data/SketchANIMAR2023/3D_Model_References/generated_models'
 train_ds = SHREC23_Rings_RenderOnly_ImageQuery(
-        args.train_csv_path, args.rings_path, args.skt_data_path, 1 + np.arange(args.num_rings))
+        args.train_csv_path, args.rings_path, args.skt_data_path, ring_ids)
 
 train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True,
                       num_workers=args.num_workers, collate_fn=train_ds.collate_fn)
 
 test_ds = SHREC23_Rings_RenderOnly_ImageQuery(
-        args.test_csv_path, args.rings_path, args.skt_data_path, 1 + np.arange(args.num_rings))
+        args.test_csv_path, args.rings_path, args.skt_data_path, ring_ids)
 
 test_dl = DataLoader(test_ds, batch_size=batch_size, shuffle=False,
                      num_workers=args.num_workers, collate_fn=test_ds.collate_fn)
