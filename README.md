@@ -105,7 +105,7 @@ python train_sketch_ringview.py \
     --view-cnn-backbone resnet18 \
     --skt-cnn-backbone resnet18 \
     --rings-path data/SketchANIMAR2023/3D_Model_References/generated_models \
-    --num-rings 6 \
+    --used-rings 2,3,4,5 \
     --skt-data-path data/SketchANIMAR2023/Train/SketchQuery_Train \
     --train-csv-path data/csv/train_skt.csv \
     --test-csv-path data/csv/test_skt.csv \
@@ -124,7 +124,7 @@ python train_sketch_ringview.py \
 
 The result of training process will be put inside folder `exps/ringview_exp_{num}` (`num` is counted from 0)
 
-## Training for text-based (track 2)
+## Training for text-based (track 3)
 
 - Plan: Sentence-BERT instead of BERT
 
