@@ -51,7 +51,7 @@ Resources:
 
 Current available models:
 
-- CNN backbone: ResNet (`resnetXX`), EfficientNet (`efficientnet_bX`)
+- CNN backbone: ResNet (`resnetXX`), EfficientNet (`efficientnet_bX`, `efficientnet_v2_X`)
 - PCL model: CurveNet (`curvenet`), PointMLP (`pointmlp`), PointMLPElite (`pointmlpelite`)
 - View sequence embedder: LSTM/BiLSTM (`bilstm`), Transformer Encoder (`mha`)
 - Ring sequence embedder: Transformer Encoder (support multi MHA layers)
