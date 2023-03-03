@@ -79,7 +79,10 @@ class EfficientNetExtractor(ImageExtractor):
         'efficientnet_b4': models.efficientnet_b4,
         'efficientnet_b5': models.efficientnet_b5,
         'efficientnet_b6': models.efficientnet_b6,
-        'efficientnet_b7': models.efficientnet_b7
+        'efficientnet_b7': models.efficientnet_b7,
+        'efficientnet_v2_s': models.efficientnet_v2_s,
+        'efficientnet_v2_m': models.efficientnet_v2_m,
+        'efficientnet_v2_l': models.efficientnet_v2_l,
     }
 
     def __init__(self, version='efficientnet_b2', use_pretrained=True, is_frozen=False):
