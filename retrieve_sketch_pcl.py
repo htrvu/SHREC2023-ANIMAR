@@ -22,9 +22,9 @@ python retrieve_sketch_pcl.py \
     --pcl-model pointmlp \
     --cnn-backbone efficientnet_v2_s \
     --output-path exps \
-    --obj-data-path /kaggle/input/shrec23/SketchANIMAR2023/3D_Model_References/References \
-    --skt-data-path /kaggle/input/shrec23/SketchANIMAR2023/Train/CroppedSketchQuery_Train \
-    --test-csv-path /kaggle/input/shrec23/csv/test_skt.csv \
+    --obj-data-path data/SketchANIMAR2023/3D_Model_References/References \
+    --skt-data-path data/SketchANIMAR2023/Train/CroppedSketchQuery_Train \
+    --test-csv-path data/csv/test_skt.csv \
     --batch-size 4 \
     --latent-dim 128 \
     --obj-weight exps/pointmlp_effiv2_200epoch/weights/best_obj_embedder.pth \
@@ -78,18 +78,18 @@ os.makedirs(output_path)
 # Load Model
 ## Get weight
 ### For Object Extraction
-obj_kwargs, obj_state = torch.load(args.obj_weight)
+obj_state = torch.load(args.obj_weight)
 ### For Sketch Extraction
 query_kwargs, query_state = torch.load(args.skt_weight)
 
 ## Construct model
 ### For Object Extraction
 if args.pcl_model == 'curvenet':
-    obj_extractor = CurveNet(device=device, **obj_kwargs)
+    obj_extractor = CurveNet(device=device)
 elif args.pcl_model == 'pointmlp':
-    obj_extractor = PointMLP(device=device, **obj_kwargs)
+    obj_extractor = PointMLP(device=device)
 elif args.pcl_model == 'pointmlpelite':
-    obj_extractor = PointMLPElite(device=device, **obj_kwargs)
+    obj_extractor = PointMLPElite(device=device)
 else:
     raise NotImplementedError
 ### For Sketch Extraction
