@@ -8,3 +8,4 @@ exps/
 temps/
 *build*
 *egg-info*
+*.DS_Store*
