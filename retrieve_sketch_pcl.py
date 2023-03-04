@@ -104,10 +104,12 @@ else:
 ## Apply weights
 ### For Object Extraction
 obj_embedder = MLP(obj_extractor, latent_dim=latent_dim)
-obj_embedder = obj_embedder.load_state_dict(obj_state).to(device)
+obj_embedder.load_state_dict(obj_state)
+obj_embedder = obj_embedder.to(device)
 ### For Sketch Extraction
 query_embedder = MLP(query_extractor, latent_dim=latent_dim)
-query_embedder = query_embedder.load_state_dict(query_state).to(device)
+query_embedder.load_state_dict(query_state)
+query_embedder = query_embedder.to(device)
 
 
 # Load Data
