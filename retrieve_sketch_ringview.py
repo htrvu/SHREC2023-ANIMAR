@@ -17,22 +17,36 @@ parser.add_argument('--info-json', type=str, required=True, help='Path to model 
 parser.add_argument('--rings-path', type=str, required=True, help='Path to parent folder of ringviews')
 parser.add_argument('--skt-data-path', type=str, required=True, help='Path to 3D sketches folder')
 parser.add_argument('--test-csv-path', type=str, required=True, help='Path to CSV file of sketch in test set')
+parser.add_argument('--obj-weight', type=str, required=True, help='Path to object weight')
+parser.add_argument('--skt-weight', type=str, required=True, help='Path to sketch weight')
 parser.add_argument('--output-path', type=str,
                     default='./predict', help='Path to output folder')
 
 #Tuning weight
 parser.add_argument('--used-rings', type=str, default='0,1,2,3,4,5,6', help='Rings to be used for training')
 
-parser.add_argument('--obj-weight', type=str, required=True, help='Path to object weight')
-parser.add_argument('--skt-weight', type=str, required=True, help='Path to sketch weight')
-parser.add_argument('--output-path', type=str,
-                    default='./predict', help='Path to output folder')
+
 
 
 args = parser.parse_args()
 #Info json
 with open(args.info_json) as json_file:
     arg_dict = json.load(json_file)
+
+# Output folder
+output_path = args.output_path
+if not os.path.exists(output_path):
+    os.makedirs(output_path)
+folders = os.listdir(output_path)
+new_id = 0
+if len(folders) > 0:
+    for folder in folders:
+        if folder.startswith('pcl'):
+            continue
+        new_id = max(new_id, int(folder.split('ringview_exp_')[-1]))
+    new_id += 1
+sub_output_path = os.path.join(output_path, f'ringview_exp_{new_id}')
+os.makedirs(sub_output_path)
 
 # Initiate
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
