@@ -59,6 +59,7 @@ class ResNetExtractor(ImageExtractor):
 
     def __init__(self, version='resnet50', use_pretrained=True, is_frozen=False, drop=0):
         super().__init__()
+        self.kwargs={'version':version}
         assert version in ResNetExtractor.arch, \
             f'Invalid version [{version}].'
         cnn = ResNetExtractor.arch[version](pretrained=use_pretrained)
@@ -79,11 +80,15 @@ class EfficientNetExtractor(ImageExtractor):
         'efficientnet_b4': models.efficientnet_b4,
         'efficientnet_b5': models.efficientnet_b5,
         'efficientnet_b6': models.efficientnet_b6,
-        'efficientnet_b7': models.efficientnet_b7
+        'efficientnet_b7': models.efficientnet_b7,
+        'efficientnet_v2_s': models.efficientnet_v2_s,
+        'efficientnet_v2_m': models.efficientnet_v2_m,
+        'efficientnet_v2_l': models.efficientnet_v2_l,
     }
 
     def __init__(self, version='efficientnet_b2', use_pretrained=True, is_frozen=False):
         super().__init__()
+        self.kwargs={'version':version}
         assert version in EfficientNetExtractor.arch, \
             f'Invalid version [{version}].'
         cnn = EfficientNetExtractor.arch[version](pretrained=use_pretrained)

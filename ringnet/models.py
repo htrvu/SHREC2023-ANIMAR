@@ -69,6 +69,7 @@ class BaseRingExtractor(nn.Module):
 class Base3DObjectRingsExtractor(nn.Module):
     def __init__(self, num_rings, view_cnn_backbone='resnet50', view_seq_embedder='bilstm', num_mhas=1, num_heads=4, dropout=0.0, reverse=False):
         super().__init__()
+        self.kwargs = {'num_rings': num_rings, 'view_cnn_backbone': view_cnn_backbone, 'view_seq_embedder': view_seq_embedder,'num_mhas':num_mhas,'num_heads':num_heads,'dropout':dropout}
         self.reverse = reverse
         if reverse:
             num_rings = 12
