@@ -78,9 +78,9 @@ os.makedirs(output_path)
 # Load Model
 ## Get weight
 ### For Object Extraction
-obj_state = torch.load(args.obj_weight)
+obj_state, *other = torch.load(args.obj_weight)
 ### For Sketch Extraction
-query_kwargs, query_state = torch.load(args.skt_weight)
+query_kwargs, query_state, *other = torch.load(args.skt_weight)
 
 ## Construct model
 ### For Object Extraction
