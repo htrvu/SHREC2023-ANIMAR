@@ -217,6 +217,38 @@ def DatasetBatchInfo(batch):
         DatasetItemInfo(v, 4)
     print()
 
+class SHREC23_Test_PointCloudData_Objects(data.Dataset):
+    def __init__(self, obj_data_path, csv_data_path, ids=None):
+        self.csv_data = pd.read_csv(csv_data_path)
+        self.ids = self.csv_data.index
+        self.obj_data_path = obj_data_path
+        self.render_transforms = tvtf.Compose([
+                tvtf.CenterCrop((352, 352)),
+                tvtf.Resize((224, 224)),
+                tvtf.ToTensor(),
+                tvtf.Normalize(mean=[0.485, 0.456, 0.406],
+                               std=[0.229, 0.224, 0.225]),
+            ])
+    def __len__(self):
+        return len(self.ids)
+
+    def __getitem__(self, idx):
+        obj_id = self.csv_data.iloc[idx]['ID']
+        points = read_obj(os.path.join(self.obj_data_path, obj_id + '.obj'))
+        points = np.array(points)
+        points = default_transforms()(points)
+        
+        return {
+            "pointcloud": points,
+            "gallery_id": obj_id,
+        }
+    def collate_fn(self, batch):
+        batch = {
+            'pointclouds': torch.stack([item['pointcloud'] for item in batch]),
+            'gallery_ids': [item['gallery_id'] for item in batch],
+        }
+        return batch
+
 if __name__ == "__main__":
     dataset = SHREC23_PointCloudData_ImageQuery(obj_data_path='data/SketchANIMAR2023/3D_Model_References/References',
                                                 csv_data_path='data/csv/train_skt.csv',

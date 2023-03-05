@@ -204,6 +204,99 @@ class SHREC23_Rings_RenderOnly_TextQuery(BaseShrecDataset):
         )
         return batch_dict
         
+class SHREC23_Test_Rings_Objects(data.Dataset):
+    def __init__(self, obj_csv_path, ring_root, ring_ids, is_train=True, vis=False):
+        super().__init__()
+        self.csv_data = pd.read_csv(obj_csv_path)
+        self.obj_ids = self.csv_data['ID']
+        self.obj_root = ring_root
+
+        self.data = [
+            {
+                mode:
+                [
+                    [
+                        os.path.join(self.obj_root,
+                                     f'ring{ring_id}',
+                                     f'{obj_id}',
+                                     mode,
+                                     f'Image{view_id:04d}.png')
+                        for view_id in range(1, 13)
+                    ]
+                    for ring_id in ring_ids
+                ]
+                for mode in ['render']
+            }
+            for obj_id in self.obj_ids
+        ]
+
+        if is_train:
+            self.render_transforms = tvtf.Compose([
+                tvtf.CenterCrop((352, 352)),
+                tvtf.Resize((224, 224)),
+                tvtf.ToTensor(),
+                tvtf.Normalize(mean=[0.485, 0.456, 0.406],
+                               std=[0.229, 0.224, 0.225]),
+            ])
+
+            self.mask_transforms = tvtf.Compose([
+                tvtf.CenterCrop((352, 352)),
+                tvtf.Resize((224, 224)),
+            ])
+        else:
+            self.render_transforms = tvtf.Compose([
+                tvtf.CenterCrop((352, 352)),
+                tvtf.Resize((224, 224)),
+                tvtf.ToTensor(),
+                tvtf.Normalize(mean=[0.485, 0.456, 0.406],
+                               std=[0.229, 0.224, 0.225]),
+            ])
+
+            self.mask_transforms = tvtf.Compose([
+                tvtf.CenterCrop((352, 352)),
+                tvtf.Resize((224, 224)),
+            ])
+
+        if vis:
+            self.render_transforms = tvtf.Compose([
+                tvtf.ToTensor(),
+            ])
+
+            self.mask_transforms = tvtf.Compose([
+            ])
+
+        self.is_train = is_train
+        print('Dataset length: ',len(self))
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, i):
+
+        data = self.data[i]['render']
+        obj_id = self.csv_data.iloc[i]['ID']
+
+        ims = torch.cat([
+            torch.cat([
+                self.render_transforms(
+                    Image.open(x).convert('RGB')
+                ).unsqueeze(0)
+                for x in views
+            ]).unsqueeze(0)
+            for views in data
+        ])
+        return {
+            "object_im": ims,
+            "gallery_id": obj_id,
+        }
+
+    def collate_fn(self, batch):
+        batch_dict = {
+            "object_ims": torch.stack([x['object_im'] for x in batch]),
+            "gallery_ids": [x['gallery_id'] for x in batch],
+        }
+        return batch_dict
+
 
 if __name__ == '__main__':
 
