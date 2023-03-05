@@ -137,12 +137,12 @@ for e in range(epoch):
     if metrics_results['mAP'] > best_mAP:
         best_mAP = metrics_results['mAP']
         # save weights
-        torch.save(obj_embedder.state_dict(), os.path.join(weights_path, 'best_obj_embedder.pth'))
-        torch.save(query_embedder.state_dict(), os.path.join(weights_path, 'best_query_embedder.pth'))
+        torch.save([obj_embedder.state_dict()], os.path.join(weights_path, 'best_obj_embedder.pth'))
+        torch.save([query_extractor.kwargs, query_embedder.state_dict()], os.path.join(weights_path, 'best_query_embedder.pth'))
     eval_results.append(metrics_results)
 
-torch.save(obj_embedder.state_dict(), os.path.join(weights_path, 'last_obj_embedder.pth'))
-torch.save(query_embedder.state_dict(), os.path.join(weights_path, 'last_query_embedder.pth'))
+torch.save([obj_embedder.state_dict()], os.path.join(weights_path, 'last_obj_embedder.pth'))
+torch.save([query_extractor.kwargs, query_embedder.state_dict()], os.path.join(weights_path, 'last_query_embedder.pth'))
 
 with open(os.path.join(output_path, 'args.json'), 'w') as f:
     json.dump(args.__dict__, f)
