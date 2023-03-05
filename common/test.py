@@ -72,6 +72,6 @@ def test_loop(obj_embedder, query_embedder, obj_input, query_input, dimension, d
     metrics_results = evaluate(rank_matrix, model_labels, model_labels)
     print_results(metrics_results)
 
-    save_submission(f"{output_path}/submission.csv")
+    save_submission(f"{output_path}/query_results.json", f"{output_path}/submission.csv")
 
     return metrics_results
