@@ -126,7 +126,7 @@ optimizer2 = torch.optim.AdamW(
 
 training_losses = []
 eval_results = []
-best_mAP = 0
+best_NDCG = 0
 for e in range(epoch):
     print(f'Epoch {e+1}/{epoch}:')
     loss = train_loop(obj_embedder=obj_embedder, query_embedder=query_embedder,
@@ -146,8 +146,8 @@ for e in range(epoch):
                                 device=device,
                                 output_path=output_path)
 
-    if metrics_results['mAP'] > best_mAP:
-        best_mAP = metrics_results['mAP']
+    if metrics_results['NDCG'] > best_NDCG:
+        best_NDCG = metrics_results['NDCG']
         # save weights
         torch.save([obj_extractor.kwargs,obj_embedder.state_dict()], os.path.join(
             weights_path, 'best_obj_embedder.pth'))
