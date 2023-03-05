@@ -134,6 +134,40 @@ The result of training process will be put inside folder `exps/ringview_exp_{num
 
 - Plan: Sentence-BERT instead of BERT
 
-## Retrieval
+## Retrieve
 
-- ...
+### Sketch-based
+
+- Point-cloud method:
+
+```
+python retrieve_sketch_pcl.py \
+    --pcl-model pointmlp \
+    --cnn-backbone efficientnet_v2_s\
+    --output-path predicts \
+    --obj-data-path ./data/SketchANIMAR2023/3D_Model_References/References \
+    --obj-csv-path ./data/SketchANIMAR2023/3D_Model_References/References.csv \
+    --skt-data-path ./data/SketchANIMAR2023/Public\ Test/CroppedSketchQuery_Test \
+    --skt-csv-path ./data/SketchANIMAR2023/Public\ Test/SketchQuery_Test.csv \
+    --batch-size 4 \
+    --latent-dim 128 \
+    --obj-weight ./exps/pcl_exp_0/weights/best_obj_embedder.pth \
+    --skt-weight ./exps/pcl_exp_0/weights/best_query_embedder.pth
+```
+
+- Ring-view method
+
+```
+python retrieve_sketch_ringview.py \
+    --info-json ./exps/ringview_exp_0/args.json \
+    --rings-path data/SketchANIMAR2023/3D_Model_References/generated_sketches \
+    --obj-csv-path ./data/SketchANIMAR2023/3D_Model_References/References.csv \
+    --skt-data-path ./data/SketchANIMAR2023/Public\ Test/CroppedSketchQuery_Test \
+    --skt-csv-path ./data/SketchANIMAR2023/Public\ Test/SketchQuery_Test.csv \
+    --obj-weight ./exps/ringview_exp_0/weights/best_obj_embedder.pth \
+    --skt-weight ./exps/ringview_exp_0/weights/best_query_embedder.pth \
+    --output-path predicts
+```
+### Text-based
+
+...
