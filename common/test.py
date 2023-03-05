@@ -4,7 +4,8 @@ from tqdm import tqdm
 import torch 
 from metrics import evaluate
 from typing import List
-import os
+import pandas as pd
+import json
 
 def encode_labels(labels):
     unique_labels = np.unique(labels)
@@ -14,6 +15,16 @@ def encode_labels(labels):
 def print_results(results):
     for metric, value in results.items():
         print(f'- {metric}: {value}')
+
+
+def save_submission(result_json_path,output_path):
+    submit_dict={}
+    with open(result_json_path) as f:
+        result = json.load(f)
+        for id in result:
+            submit_dict[id]=result[id]['pred_ids']
+        df=pd.DataFrame.from_dict(submit_dict).T
+        df.to_csv(output_path,sep=',',index=True,header=None)
 
 def test_loop(obj_embedder, query_embedder, obj_input, query_input, dimension, dl, device, output_path):
     gallery_embeddings = []
@@ -52,12 +63,15 @@ def test_loop(obj_embedder, query_embedder, obj_input, query_input, dimension, d
     model_labels = np.array(encode_labels(query_ids), dtype=np.int32)
     rank_matrix = top_k_indexes_all
 
+
+
     np.savetxt(f"{output_path}/rank_matrix.csv", rank_matrix, delimiter=",",fmt='%i')
+
     print('- Evaluation results:')
 
     metrics_results = evaluate(rank_matrix, model_labels, model_labels)
     print_results(metrics_results)
 
+    save_submission(f"{output_path}/submission.csv")
+
     return metrics_results
-
-
