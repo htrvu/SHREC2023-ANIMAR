@@ -6,9 +6,9 @@ __all__ = [ 'BaseRingExtractor',
             'Base3DObjectRingsExtractor']
 
 class TransEncoderBlock(nn.Module):
-    def __init__(self, feature_dim, num_heads, dropout, hidden_dim=None):
+    def __init__(self, feature_dim, num_heads, dropout, hidden_dim=None, batch_first=False):
         super().__init__()
-        self.mha = nn.MultiheadAttention(feature_dim, num_heads, dropout)
+        self.mha = nn.MultiheadAttention(feature_dim, num_heads, dropout, batch_first=batch_first)
         self.layernorm1 = nn.LayerNorm(feature_dim)
         self.layernorm2 = nn.LayerNorm(feature_dim)
         self.fc = nn.Sequential(
@@ -50,7 +50,7 @@ class BaseRingExtractor(nn.Module):
                                 bidirectional=True)
         elif view_seq_embedder == 'mha':
             self.feature_dim = self.cnn_feature_dim     # D'
-            self.embedder = TransEncoderBlock(self.cnn_feature_dim, num_heads=4, dropout=0.0, hidden_dim=2*hidden_dim)
+            self.embedder = TransEncoderBlock(self.cnn_feature_dim, num_heads=4, dropout=0.0, hidden_dim=2*self.feature_dim, batch_first=True)
 
     def get_embedding(self, x):
         # x: [B, V, C, H, W]
