@@ -5,6 +5,7 @@ data/*
 !*.py
 !*.md
 exps/
+predicts/
 temps/
 *build*
 *egg-info*
