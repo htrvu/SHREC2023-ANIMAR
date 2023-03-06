@@ -15,7 +15,9 @@ from utils.plot_logs import plot_logs
 import os
 import json
 import argparse
+# from utils.seed import seed_everything
 
+# seed_everything()
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--pcl-model', type=str,
@@ -115,7 +117,7 @@ optimizer2 = torch.optim.AdamW(
 
 training_losses = []
 eval_results = []
-best_mAP = 0
+best_NDCG = 0
 for e in range(epoch):
     print(f'Epoch {e+1}/{epoch}:')
     loss = train_loop(obj_embedder=obj_embedder, query_embedder=query_embedder,
@@ -134,8 +136,9 @@ for e in range(epoch):
             dimension=latent_dim,
             output_path = output_path,
             device=device)
-    if metrics_results['mAP'] > best_mAP:
-        best_mAP = metrics_results['mAP']
+    if metrics_results['NDCG'] > best_NDCG:
+        best_NDCG = metrics_results['NDCG']
+        print('save best weights')
         # save weights
         torch.save([obj_embedder.state_dict()], os.path.join(weights_path, 'best_obj_embedder.pth'))
         torch.save([query_extractor.kwargs, query_embedder.state_dict()], os.path.join(weights_path, 'best_query_embedder.pth'))
@@ -143,6 +146,16 @@ for e in range(epoch):
 
 torch.save([obj_embedder.state_dict()], os.path.join(weights_path, 'last_obj_embedder.pth'))
 torch.save([query_extractor.kwargs, query_embedder.state_dict()], os.path.join(weights_path, 'last_query_embedder.pth'))
+
+obj_embedder.load_state_dict(torch.load(os.path.join(weights_path, 'best_obj_embedder.pth'))[0])
+query_embedder.load_state_dict(torch.load(os.path.join(weights_path, 'best_query_embedder.pth'))[1])
+print('Best weights result (it maybe has some randomness):')
+metrics_results = test_loop(obj_embedder=obj_embedder, query_embedder=query_embedder,
+        obj_input='pointclouds', query_input='query_ims',
+        dl=test_dl,
+        dimension=latent_dim,
+        output_path=output_path,
+        device=device)
 
 with open(os.path.join(output_path, 'args.json'), 'w') as f:
     json.dump(args.__dict__, f)
