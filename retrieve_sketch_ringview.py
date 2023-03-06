@@ -40,7 +40,7 @@ folders = os.listdir(output_path)
 new_id = 0
 if len(folders) > 0:
     for folder in folders:
-        if folder.startswith('pcl'):
+        if not folder.startswith('ringview_predict_'):
             continue
         new_id = max(new_id, int(folder.split('ringview_predict_')[-1]))
     new_id += 1

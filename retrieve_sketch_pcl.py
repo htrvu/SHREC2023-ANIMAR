@@ -49,7 +49,7 @@ folders = os.listdir(output_path)
 new_id = 0
 if len(folders) > 0:
     for folder in folders:
-        if folder.startswith('ringview'):
+        if not folder.startswith('pcl_predict_'):
             continue
         new_id = max(new_id, int(folder.split('pcl_predict_')[-1]))
     new_id += 1
@@ -59,7 +59,7 @@ os.makedirs(output_path)
 # Load Model
 ## Get weight
 ### For Object Extraction
-obj_state = torch.load(args.obj_weight)
+obj_state = torch.load(args.obj_weight)[0]
 ### For Sketch Extraction
 query_kwargs, query_state, *other = torch.load(args.skt_weight)
 
