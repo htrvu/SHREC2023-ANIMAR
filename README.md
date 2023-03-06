@@ -62,7 +62,9 @@ Current available models:
 
 MLP for embedding to common space can be in the shinking (default) or expanding mode.
 
-**NOTE**. Cross Batch Memory in training is currently disabled. If you want to use it, let's add the flag `--use-cbm` in training commands.
+**NOTE**.
+- Cross Batch Memory in training is currently disabled. If you want to use it, let's add the flag `--use-cbm` in training commands.
+- Add the flag `--reduce-lr` to use the learning rate schedule.
 
 ### 3.1. Point-cloud Method
 

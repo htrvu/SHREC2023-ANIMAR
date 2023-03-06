@@ -45,6 +45,8 @@ parser.add_argument('--lr-skt', type=float, default=1e-4,
                     help='Learning rate for sketch\'s network')
 parser.add_argument('--use-cbm', default=False, action='store_true',
                     help='Use cross batch memory in training')
+parser.add_argument('--reduce-lr', default=False, action='store_true',
+                    help='Use cross batch memory in training')
 
 parser.add_argument('--latent-dim', type=int, default=128,
                     help='Latent dimensions of common embedding space')
@@ -135,15 +137,16 @@ optimizer2 = torch.optim.AdamW(
     query_embedder.parameters(), lr=args.lr_skt, weight_decay=0.0001)
 
 # Set Scheduler
-obj_scheduler = StepLR(optimizer1, step_size=15, gamma=0.1)
-query_scheduler = StepLR(optimizer2, step_size=15, gamma=0.1)
+if args.reduce_lr:
+    obj_scheduler = StepLR(optimizer1, step_size=15, gamma=0.1)
+    query_scheduler = StepLR(optimizer2, step_size=15, gamma=0.1)
+
+    prev_obj_lr, prev_query_lr = optimizer1.param_groups[
+        0]['lr'], optimizer2.param_groups[0]['lr']
 
 training_losses = []
 eval_results = []
 best_NDCG = 0
-
-prev_obj_lr, prev_query_lr = optimizer1.param_groups[
-    0]['lr'], optimizer2.param_groups[0]['lr']
 
 for e in range(epoch):
     print(f'Epoch {e+1}/{epoch}:')
@@ -158,22 +161,23 @@ for e in range(epoch):
     print(f'Loss: {loss:.4f}')
     training_losses.append(loss)
 
-    obj_scheduler.step()
-    query_scheduler.step()
+    if args.reduce_lr:
+        obj_scheduler.step()
+        query_scheduler.step()
 
-    # Print the loss and learning rate for each epoch
-    curr_obj_lr, curr_query_lr = optimizer1.param_groups[
-        0]['lr'], optimizer2.param_groups[0]['lr']
+        # Print the loss and learning rate for each epoch
+        curr_obj_lr, curr_query_lr = optimizer1.param_groups[
+            0]['lr'], optimizer2.param_groups[0]['lr']
 
-    if curr_obj_lr != prev_obj_lr:
-        print('Object learning rate changed from {:.7f} to {:.7f}'.format(
-            prev_obj_lr, curr_obj_lr))
-        prev_obj_lr = curr_obj_lr
+        if curr_obj_lr != prev_obj_lr:
+            print('Object learning rate changed from {:.7f} to {:.7f}'.format(
+                prev_obj_lr, curr_obj_lr))
+            prev_obj_lr = curr_obj_lr
 
-    if curr_query_lr != prev_query_lr:
-        print('Query learning rate changed from {:.7f} to {:.7f}'.format(
-            prev_query_lr, curr_query_lr))
-        prev_query_lr = curr_query_lr
+        if curr_query_lr != prev_query_lr:
+            print('Query learning rate changed from {:.7f} to {:.7f}'.format(
+                prev_query_lr, curr_query_lr))
+            prev_query_lr = curr_query_lr
 
     metrics_results = test_loop(obj_embedder=obj_embedder, query_embedder=query_embedder,
                                 obj_input='object_ims', query_input='query_ims',
