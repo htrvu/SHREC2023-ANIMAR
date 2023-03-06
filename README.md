@@ -132,13 +132,13 @@ python train_sketch_ringview.py \
 
 The result of training process will be put inside folder `exps/ringview_exp_{num}` (`num` is counted from 0)
 
-## Training for text-based (track 3)
+## 4. Training for text-based (track 3)
 
 - Plan: Sentence-BERT instead of BERT
 
-## Retrieve
+## 5. Retrieval
 
-### Sketch-based
+### 5.1. Sketch-based
 
 - Point-cloud method:
 
@@ -167,6 +167,33 @@ python retrieve_sketch_ringview.py \
     --skt-weight ./exps/ringview_exp_0/weights/best_query_embedder.pth \
     --output-path predicts
 ```
-### Text-based
+### 5.2. Text-based
 
 ...
+
+## 6. Ensemble query results
+
+For example, the folder `predicts/pointmlp` is currently in these structure:
+
+```
+├─ predicts/pointmlp/
+│  ├─ a_rand_name/
+│  │  ├─ query_results.json
+│  │  ├─ ...
+|
+│  ├─ other_rand_name/
+│  │  ├─ query_results.json
+│  │  ├─ ...
+|  |
+|  ├─ ...
+```
+
+Ensemble results:
+
+```
+python utils/ensemble_results.py \
+    --input-folder predicts/pointmlp \
+    --output-folder predicts/pointmlp_ensembled
+```
+
+After running the above command, we get the result folder `predicts/pointmlp_ensembled` storing 2 files: `query_results.json` and `submission.csv`.
