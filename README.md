@@ -144,15 +144,12 @@ The result of training process will be put inside folder `exps/ringview_exp_{num
 
 ```
 python retrieve_sketch_pcl.py \
-    --pcl-model pointmlp \
-    --cnn-backbone efficientnet_v2_s\
+    --info-json ./exps/pcl_exp_0/args.json \
     --output-path predicts \
     --obj-data-path ./data/SketchANIMAR2023/3D_Model_References/References \
     --obj-csv-path ./data/SketchANIMAR2023/3D_Model_References/References.csv \
     --skt-data-path ./data/SketchANIMAR2023/Public\ Test/CroppedSketchQuery_Test \
     --skt-csv-path ./data/SketchANIMAR2023/Public\ Test/SketchQuery_Test.csv \
-    --batch-size 4 \
-    --latent-dim 128 \
     --obj-weight ./exps/pcl_exp_0/weights/best_obj_embedder.pth \
     --skt-weight ./exps/pcl_exp_0/weights/best_query_embedder.pth
 ```
