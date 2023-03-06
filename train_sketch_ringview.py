@@ -1,6 +1,7 @@
 import torch
 from torch.utils.data import DataLoader
 from pytorch_metric_learning.losses import NTXentLoss, CrossBatchMemory
+from torch.optim.lr_scheduler import StepLR
 
 from ringnet.dataset import SHREC23_Rings_RenderOnly_ImageQuery
 from ringnet.models import Base3DObjectRingsExtractor
@@ -23,18 +24,27 @@ parser.add_argument('--view-cnn-backbone', type=str, default='efficientnet_b2',
 parser.add_argument('--skt-cnn-backbone', type=str, default='efficientnet_b2',
                     choices=[*ResNetExtractor.arch.keys(), *EfficientNetExtractor.arch.keys()],  help='Model for sketch feature extraction')
 
-parser.add_argument('--rings-path', type=str, required=True, help='Path to parent folder of ringviews')
-parser.add_argument('--used-rings', type=str, default='0,1,2,3,4,5,6', help='Rings to be used for training')
-parser.add_argument('--skt-data-path', type=str, required=True, help='Path to 3D sketches folder')
-parser.add_argument('--train-csv-path', type=str, required=True, help='Path to CSV file of mapping object and sketch in training set')
-parser.add_argument('--test-csv-path', type=str, required=True, help='Path to CSV file of mapping object and sketch in test set')
+parser.add_argument('--rings-path', type=str, required=True,
+                    help='Path to parent folder of ringviews')
+parser.add_argument('--used-rings', type=str,
+                    default='0,1,2,3,4,5,6', help='Rings to be used for training')
+parser.add_argument('--skt-data-path', type=str,
+                    required=True, help='Path to 3D sketches folder')
+parser.add_argument('--train-csv-path', type=str, required=True,
+                    help='Path to CSV file of mapping object and sketch in training set')
+parser.add_argument('--test-csv-path', type=str, required=True,
+                    help='Path to CSV file of mapping object and sketch in test set')
 
 parser.add_argument('--batch-size', type=int, default=2, help='Batch size')
 parser.add_argument('--epochs', type=int, default=10, help='Num of epochs')
-parser.add_argument('--num-workers', type=int, default=1, help='Num of workers')
-parser.add_argument('--lr-obj', type=float, default=1e-4, help='Learning rate for object\'s network')
-parser.add_argument('--lr-skt', type=float, default=1e-4, help='Learning rate for sketch\'s network')
-parser.add_argument('--use-cbm', default=False, action='store_true', help='Use cross batch memory in training')
+parser.add_argument('--num-workers', type=int,
+                    default=1, help='Num of workers')
+parser.add_argument('--lr-obj', type=float, default=1e-4,
+                    help='Learning rate for object\'s network')
+parser.add_argument('--lr-skt', type=float, default=1e-4,
+                    help='Learning rate for sketch\'s network')
+parser.add_argument('--use-cbm', default=False, action='store_true',
+                    help='Use cross batch memory in training')
 
 parser.add_argument('--latent-dim', type=int, default=128,
                     help='Latent dimensions of common embedding space')
@@ -103,13 +113,13 @@ query_embedder = MLP(query_extractor, latent_dim=latent_dim).to(device)
 
 # datasets
 train_ds = SHREC23_Rings_RenderOnly_ImageQuery(
-        args.train_csv_path, args.rings_path, args.skt_data_path, ring_ids)
+    args.train_csv_path, args.rings_path, args.skt_data_path, ring_ids)
 
 train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True,
                       num_workers=args.num_workers, collate_fn=train_ds.collate_fn)
 
 test_ds = SHREC23_Rings_RenderOnly_ImageQuery(
-        args.test_csv_path, args.rings_path, args.skt_data_path, ring_ids)
+    args.test_csv_path, args.rings_path, args.skt_data_path, ring_ids)
 
 test_dl = DataLoader(test_ds, batch_size=batch_size, shuffle=False,
                      num_workers=args.num_workers, collate_fn=test_ds.collate_fn)
@@ -124,9 +134,17 @@ optimizer1 = torch.optim.AdamW(
 optimizer2 = torch.optim.AdamW(
     query_embedder.parameters(), lr=args.lr_skt, weight_decay=0.0001)
 
+# Set Scheduler
+obj_scheduler = StepLR(optimizer1, step_size=15, gamma=0.1)
+query_scheduler = StepLR(optimizer2, step_size=15, gamma=0.1)
+
 training_losses = []
 eval_results = []
 best_NDCG = 0
+
+prev_obj_lr, prev_query_lr = optimizer1.param_groups[
+    0]['lr'], optimizer2.param_groups[0]['lr']
+
 for e in range(epoch):
     print(f'Epoch {e+1}/{epoch}:')
     loss = train_loop(obj_embedder=obj_embedder, query_embedder=query_embedder,
@@ -136,8 +154,26 @@ for e in range(epoch):
                       dl=train_dl,
                       device=device,
                       use_cross_batch_mem=args.use_cbm)
+
     print(f'Loss: {loss:.4f}')
     training_losses.append(loss)
+
+    obj_scheduler.step()
+    query_scheduler.step()
+
+    # Print the loss and learning rate for each epoch
+    curr_obj_lr, curr_query_lr = optimizer1.param_groups[
+        0]['lr'], optimizer2.param_groups[0]['lr']
+
+    if curr_obj_lr != prev_obj_lr:
+        print('Object learning rate changed from {:.7f} to {:.7f}'.format(
+            prev_obj_lr, curr_obj_lr))
+        prev_obj_lr = curr_obj_lr
+
+    if curr_query_lr != prev_query_lr:
+        print('Query learning rate changed from {:.7f} to {:.7f}'.format(
+            prev_query_lr, curr_query_lr))
+        prev_query_lr = curr_query_lr
 
     metrics_results = test_loop(obj_embedder=obj_embedder, query_embedder=query_embedder,
                                 obj_input='object_ims', query_input='query_ims',
@@ -149,15 +185,16 @@ for e in range(epoch):
     if metrics_results['NDCG'] > best_NDCG:
         best_NDCG = metrics_results['NDCG']
         # save weights
-        torch.save([obj_extractor.kwargs,obj_embedder.state_dict()], os.path.join(
+        torch.save([obj_extractor.kwargs, obj_embedder.state_dict()], os.path.join(
             weights_path, 'best_obj_embedder.pth'))
-        torch.save([query_extractor.kwargs,query_embedder.state_dict()], os.path.join(
+        torch.save([query_extractor.kwargs, query_embedder.state_dict()], os.path.join(
             weights_path, 'best_query_embedder.pth'))
     eval_results.append(metrics_results)
 
-torch.save([obj_extractor.kwargs,obj_embedder.state_dict()], os.path.join(
+
+torch.save([obj_extractor.kwargs, obj_embedder.state_dict()], os.path.join(
     weights_path, 'last_obj_embedder.pth'))
-torch.save([query_extractor.kwargs,query_embedder.state_dict()], os.path.join(
+torch.save([query_extractor.kwargs, query_embedder.state_dict()], os.path.join(
     weights_path, 'last_query_embedder.pth'))
 
 with open(os.path.join(output_path, 'args.json'), 'w') as f:
