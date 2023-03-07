@@ -1,3 +1,4 @@
+import argparse
 import torch
 from torch.utils.data import DataLoader
 from pytorch_metric_learning.losses import NTXentLoss, CrossBatchMemory
@@ -9,9 +10,49 @@ from common.models import BertExtractor, MLP
 from common.test import test_loop
 from common.train import train_loop
 
-batch_size = 2
-latent_dim = 128
-epoch = 10
+parser = argparse.ArgumentParser()
+parser.add_argument('--pcl-model', type=str,
+                    default='curvenet', choices=['curvenet', 'pointmlp', 'pointmlpelite'], help='Model for point cloud feature extraction')
+
+parser.add_argument('--obj-data-path', type=str,
+                    required=True, help='Path to 3D objects folder')
+parser.add_argument('--skt-data-path', type=str,
+                    required=True, help='Path to 3D sketches folder')
+parser.add_argument('--train-csv-path', type=str, required=True,
+                    help='Path to CSV file of mapping object and sketch in training set')
+parser.add_argument('--test-csv-path', type=str, required=True,
+                    help='Path to CSV file of mapping object and sketch in test set')
+
+parser.add_argument('--batch-size', type=int, default=2, help='Batch size')
+parser.add_argument('--epochs', type=int, default=10, help='Num of epochs')
+parser.add_argument('--num-workers', type=int,
+                    default=1, help='Num of workers')
+parser.add_argument('--lr-obj', type=float, default=1e-4,
+                    help='Learning rate for object\'s network')
+parser.add_argument('--lr-skt', type=float, default=1e-4,
+                    help='Learning rate for sketch\'s network')
+parser.add_argument('--use-cbm', default=False, action='store_true',
+                    help='Use cross batch memory in training')
+parser.add_argument('--reduce-lr', default=False, action='store_true',
+                    help='Use cross batch memory in training')
+
+parser.add_argument('--latent-dim', type=int, default=128,
+                    help='Latent dimensions of common embedding space')
+
+parser.add_argument('--output-path', type=str,
+                    default='./exps', help='Path to output folder')
+
+args = parser.parse_args()
+
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# Init
+batch_size = args.batch_size
+latent_dim = args.latent_dim
+epoch = args.epochs
+
+
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
