@@ -134,7 +134,63 @@ The result of training process will be put inside folder `exps/ringview_exp_{num
 
 ## 4. Training for text-based (track 3)
 
-- Plan: Sentence-BERT instead of BERT
+### 3.1. Point-cloud Method
+
+The meaning and default values of arguments:
+
+```
+python train_prompt_pcl.py --help
+```
+
+For example:
+
+```
+python train_prompt_pcl.py \
+    --pcl-model pointmlp \
+    --obj-data-path data/TextANIMAR2023/3D_Model_References/References \
+    --train-csv-path data/csv/train_tex.csv \
+    --test-csv-path data/csv/test_tex.csv \
+    --batch-size 4 \
+    --epochs 100 \
+    --latent-dim 256 \
+    --output-path prompt \
+    --lr-obj 3e-5 \
+    --lr-txt 3e-5
+```
+
+The result of training process will be put inside folder `prompt/pcl_exp_{num}` (`num` is counted from 0)
+
+### 3.2. Ring-view Method
+
+The meaning and default values of arguments:
+
+```
+python train_prompt_ringview.py --help
+```
+
+We can use the processed ring-view images for training (`generated_sketches`), or use the default ring-view images (`generated_models`).
+
+For example:
+
+```
+python train_prompt_ringview.py \
+    --view-cnn-backbone efficientnet_v2_s \
+    --rings-path data/TextANIMAR2023/3D_Model_References/generated_sketches \
+    --used-rings 3,4 \
+    --train-csv-path data/csv/train_tex.csv \
+    --test-csv-path data/csv/test_tex.csv \
+    --batch-size 2 \
+    --epochs 100 \
+    --latent-dim 256 \
+    --output-path exps \
+    --view-seq-embedder mha \
+    --num-rings-mhas 2 \
+    --num-heads 4 \
+    --lr-obj 3e-5 \
+    --lr-txt 3e-5
+```
+
+The result of training process will be put inside folder `prompt/ringview_exp_{num}` (`num` is counted from 0)
 
 ## 5. Retrieval
 
