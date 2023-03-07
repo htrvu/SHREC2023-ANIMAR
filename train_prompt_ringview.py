@@ -24,8 +24,6 @@ parser.add_argument('--rings-path', type=str, required=True,
                     help='Path to parent folder of ringviews')
 parser.add_argument('--used-rings', type=str,
                     default='0,1,2,3,4,5,6', help='Rings to be used for training')
-parser.add_argument('--skt-data-path', type=str,
-                    required=True, help='Path to 3D sketches folder')
 parser.add_argument('--train-csv-path', type=str, required=True,
                     help='Path to CSV file of mapping object and prompt in training set')
 parser.add_argument('--test-csv-path', type=str, required=True,
