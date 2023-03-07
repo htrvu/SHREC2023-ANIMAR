@@ -195,7 +195,7 @@ for e in range(epoch):
         # save weights
         torch.save([obj_extractor.kwargs, obj_embedder.state_dict()], os.path.join(
             weights_path, 'best_obj_embedder.pth'))
-        torch.save([query_extractor.kwargs, query_embedder.state_dict()], os.path.join(
+        torch.save([query_embedder.state_dict()], os.path.join(
             weights_path, 'best_query_embedder.pth'))
     eval_results.append(metrics_results)
 
