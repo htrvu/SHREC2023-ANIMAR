@@ -209,7 +209,7 @@ obj_embedder.load_state_dict(torch.load(os.path.join(weights_path, 'best_obj_emb
 query_embedder.load_state_dict(torch.load(os.path.join(weights_path, 'best_query_embedder.pth'))[0])
 print('Best weights result:')
 metrics_results = test_loop(obj_embedder=obj_embedder, query_embedder=query_embedder,
-                                obj_input='object_ims', query_input='query_ims',
+                                obj_input='object_ims', query_input='tokens',
                                 dl=test_dl,
                                 dimension=latent_dim,
                                 device=device,
