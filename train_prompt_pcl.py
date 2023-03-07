@@ -16,11 +16,11 @@ from pointcloud.pointmlp import PointMLP, PointMLPElite
 '''
 python train_sketch_pcl.py \
     --pcl-model pointmlp \
-    --obj-data-path /kaggle/input/shrec23/TextANIMAR2023/3D_Model_References/References \
-    --train-csv-path /kaggle/input/shrec23/csv/train_tex.csv \
-    --test-csv-path /kaggle/input/shrec23/csv/test_tex.csv \
+    --obj-data-path data/TextANIMAR2023/3D_Model_References/References \
+    --train-csv-path data/csv/train_tex.csv \
+    --test-csv-path data/csv/test_tex.csv \
     --batch-size 4 \
-    --epochs 200 \
+    --epochs 100 \
     --latent-dim 256 \
     --output-path prompt \
     --lr-obj 3e-5 \
@@ -34,9 +34,9 @@ parser.add_argument('--pcl-model', type=str,
 parser.add_argument('--obj-data-path', type=str,
                     required=True, help='Path to 3D objects folder')
 parser.add_argument('--train-csv-path', type=str, required=True,
-                    help='Path to CSV file of mapping object and sketch in training set')
+                    help='Path to CSV file of mapping object and prompt in training set')
 parser.add_argument('--test-csv-path', type=str, required=True,
-                    help='Path to CSV file of mapping object and sketch in test set')
+                    help='Path to CSV file of mapping object and prompt in test set')
 
 parser.add_argument('--batch-size', type=int, default=2, help='Batch size')
 parser.add_argument('--epochs', type=int, default=10, help='Num of epochs')
@@ -45,7 +45,7 @@ parser.add_argument('--num-workers', type=int,
 parser.add_argument('--lr-obj', type=float, default=1e-4,
                     help='Learning rate for object\'s network')
 parser.add_argument('--lr-txt', type=float, default=1e-4,
-                    help='Learning rate for sketch\'s network')
+                    help='Learning rate for prompt\'s network')
 parser.add_argument('--use-cbm', default=False, action='store_true',
                     help='Use cross batch memory in training')
 parser.add_argument('--reduce-lr', default=False, action='store_true',
@@ -65,9 +65,8 @@ batch_size = args.batch_size
 latent_dim = args.latent_dim
 epoch = args.epochs
 
-
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 # output folder
 output_path = args.output_path
 if not os.path.exists(output_path):
