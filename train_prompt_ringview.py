@@ -15,6 +15,23 @@ from common.train import train_loop
 
 from utils.plot_logs import plot_logs
 
+'''
+python train_prompt_ringview.py \
+    --view-cnn-backbone efficientnet_v2_s \
+    --rings-path data/TextANIMAR2023/3D_Model_References/generated_sketches \
+    --used-rings 3,4 \
+    --train-csv-path data/csv/train_tex.csv \
+    --test-csv-path data/csv/test_tex.csv \
+    --batch-size 2 \
+    --epochs 100 \
+    --latent-dim 256 \
+    --output-path exps \
+    --view-seq-embedder mha \
+    --num-rings-mhas 2 \
+    --num-heads 4 \
+    --lr-obj 3e-5 \
+    --lr-txt 3e-5
+'''
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--view-cnn-backbone', type=str, default='efficientnet_b2',
@@ -35,8 +52,8 @@ parser.add_argument('--num-workers', type=int,
                     default=1, help='Num of workers')
 parser.add_argument('--lr-obj', type=float, default=1e-4,
                     help='Learning rate for object\'s network')
-parser.add_argument('--lr-skt', type=float, default=1e-4,
-                    help='Learning rate for sketch\'s network')
+parser.add_argument('--lr-txt', type=float, default=1e-4,
+                    help='Learning rate for text\'s network')
 parser.add_argument('--use-cbm', default=False, action='store_true',
                     help='Use cross batch memory in training')
 parser.add_argument('--reduce-lr', default=False, action='store_true',
@@ -117,8 +134,10 @@ cbm_query = CrossBatchMemory(contra_loss, latent_dim, 128)
 cbm_object = CrossBatchMemory(contra_loss, latent_dim, 128)
 
 # Set optimizers
-optimizer1 = torch.optim.Adam(obj_embedder.parameters(), lr=0.00001, weight_decay=0.0001)
-optimizer2 = torch.optim.Adam(query_embedder.parameters(), lr=0.00001, weight_decay=0.0001)
+optimizer1 = torch.optim.AdamW(
+    obj_embedder.parameters(), lr=args.lr_obj, weight_decay=0.0001)
+optimizer2 = torch.optim.AdamW(
+    query_embedder.parameters(), lr=args.lr_txt, weight_decay=0.0001)
 
 # Set Scheduler
 if args.reduce_lr:
