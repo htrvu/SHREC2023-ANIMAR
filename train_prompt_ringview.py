@@ -202,11 +202,11 @@ for e in range(epoch):
 
 torch.save([obj_extractor.kwargs, obj_embedder.state_dict()], os.path.join(
     weights_path, 'last_obj_embedder.pth'))
-torch.save([query_extractor.kwargs, query_embedder.state_dict()], os.path.join(
+torch.save([query_embedder.state_dict()], os.path.join(
     weights_path, 'last_query_embedder.pth'))
 
 obj_embedder.load_state_dict(torch.load(os.path.join(weights_path, 'best_obj_embedder.pth'))[1])
-query_embedder.load_state_dict(torch.load(os.path.join(weights_path, 'best_query_embedder.pth'))[1])
+query_embedder.load_state_dict(torch.load(os.path.join(weights_path, 'best_query_embedder.pth'))[0])
 print('Best weights result:')
 metrics_results = test_loop(obj_embedder=obj_embedder, query_embedder=query_embedder,
                                 obj_input='object_ims', query_input='query_ims',
