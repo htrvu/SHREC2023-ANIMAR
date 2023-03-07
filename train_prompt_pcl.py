@@ -14,7 +14,7 @@ from common.train import train_loop
 from pointcloud.pointmlp import PointMLP, PointMLPElite
 
 '''
-python train_sketch_pcl.py \
+python train_prompt_pcl.py \
     --pcl-model pointmlp \
     --obj-data-path data/TextANIMAR2023/3D_Model_References/References \
     --train-csv-path data/csv/train_tex.csv \
