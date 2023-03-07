@@ -134,7 +134,7 @@ The result of training process will be put inside folder `exps/ringview_exp_{num
 
 ## 4. Training for text-based (track 3)
 
-### 3.1. Point-cloud Method
+### 4.1. Point-cloud Method
 
 The meaning and default values of arguments:
 
@@ -160,7 +160,7 @@ python train_prompt_pcl.py \
 
 The result of training process will be put inside folder `prompt/pcl_exp_{num}` (`num` is counted from 0)
 
-### 3.2. Ring-view Method
+### 4.2. Ring-view Method
 
 The meaning and default values of arguments:
 
