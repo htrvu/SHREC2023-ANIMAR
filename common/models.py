@@ -110,11 +110,12 @@ class MLP(nn.Module):
         # mlp = 4 layers, feature_dim -> feature_dim / 2 -> feature_dim / 4 -> latent_dim
         if shrink:
             self.mlp = nn.Sequential(
-                nn.Linear(self.feature_dim, self.feature_dim // 2),
-                nn.ReLU(),
-                nn.Linear(self.feature_dim // 2, self.feature_dim // 4),
-                nn.ReLU(),
-                nn.Linear(self.feature_dim // 4, latent_dim),
+                nn.Linear(self.feature_dim, latent_dim),
+                # nn.Linear(self.feature_dim, self.feature_dim // 2),
+                # nn.ReLU(),
+                # nn.Linear(self.feature_dim // 2, self.feature_dim // 4),
+                # nn.ReLU(),
+                # nn.Linear(self.feature_dim // 4, latent_dim),
             )
         else:
             self.mlp = nn.Sequential(
@@ -127,5 +128,7 @@ class MLP(nn.Module):
     def forward(self, x):
         x = self.extractor.get_embedding(x)
         x = self.mlp(x)
+        # normalize
+        x = F.normalize(x, p=2, dim=1)
         return x
         
