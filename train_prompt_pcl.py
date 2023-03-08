@@ -12,7 +12,7 @@ from common.models import BertExtractor, MLP
 from common.test import test_loop
 from common.train import train_loop
 from pointcloud.pointmlp import PointMLP, PointMLPElite
-from utils import plot_logs
+from utils.plot_logs import plot_logs
 
 '''
 python train_prompt_pcl.py \
@@ -208,5 +208,4 @@ for res in eval_results:
     P10s.append(res['P@10'])
     NDCGs.append(res['NDCG'])
     mAPs.append(res['mAP'])
-plot_logs(training_losses, NNs, P10s, NDCGs,
-          mAPs, f'{output_path}/results.png')
+plot_logs(training_losses, NNs, P10s, NDCGs,mAPs, f'{output_path}/results.png')

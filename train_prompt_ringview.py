@@ -228,5 +228,4 @@ for res in eval_results:
     P10s.append(res['P@10'])
     NDCGs.append(res['NDCG'])
     mAPs.append(res['mAP'])
-plot_logs(training_losses, NNs, P10s, NDCGs,
-          mAPs, f'{output_path}/results.png')
+plot_logs(training_losses, NNs, P10s, NDCGs, mAPs, f'{output_path}/results.png')
