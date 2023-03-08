@@ -12,6 +12,7 @@ from common.models import BertExtractor, MLP
 from common.test import test_loop
 from common.train import train_loop
 from pointcloud.pointmlp import PointMLP, PointMLPElite
+from utils import plot_logs
 
 '''
 python train_prompt_pcl.py \
