@@ -8,7 +8,7 @@ from ringnet.models import Base3DObjectRingsExtractor
 from common.models import ResNetExtractor, EfficientNetExtractor, MLP
 
 from common.test import test_loop
-from common.train import train_loop
+from common.train import train_loop, val_loop
 
 from utils.plot_logs import plot_logs
 
@@ -121,9 +121,9 @@ train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True,
                       num_workers=args.num_workers, collate_fn=train_ds.collate_fn)
 
 test_ds = SHREC23_Rings_RenderOnly_ImageQuery(
-    args.test_csv_path, args.rings_path, args.skt_data_path, ring_ids)
+    args.test_csv_path, args.rings_path, args.skt_data_path, ring_ids, is_train=False)
 
-test_dl = DataLoader(test_ds, batch_size=batch_size, shuffle=False,
+test_dl = DataLoader(test_ds, batch_size=batch_size, shuffle=True,
                      num_workers=args.num_workers, collate_fn=test_ds.collate_fn)
 
 contra_loss = NTXentLoss()
@@ -138,19 +138,20 @@ optimizer2 = torch.optim.AdamW(
 
 # Set Scheduler
 if args.reduce_lr:
-    obj_scheduler = StepLR(optimizer1, step_size=15, gamma=0.1)
-    query_scheduler = StepLR(optimizer2, step_size=15, gamma=0.1)
+    obj_scheduler = StepLR(optimizer1, step_size=10, gamma=0.333)
+    query_scheduler = StepLR(optimizer2, step_size=10, gamma=0.333)
 
     prev_obj_lr, prev_query_lr = optimizer1.param_groups[
         0]['lr'], optimizer2.param_groups[0]['lr']
 
 training_losses = []
+val_losses = []
 eval_results = []
-best_NDCG = 0
+best_loss = float('inf')
 
 for e in range(epoch):
     print(f'Epoch {e+1}/{epoch}:')
-    loss = train_loop(obj_embedder=obj_embedder, query_embedder=query_embedder,
+    train_loss = train_loop(obj_embedder=obj_embedder, query_embedder=query_embedder,
                       obj_input='object_ims', query_input='query_ims',
                       cbm_query=cbm_query, cbm_object=cbm_object,
                       obj_optimizer=optimizer1, query_optimizer=optimizer2,
@@ -158,8 +159,26 @@ for e in range(epoch):
                       device=device,
                       use_cross_batch_mem=args.use_cbm)
 
-    print(f'Loss: {loss:.4f}')
-    training_losses.append(loss)
+    print(f'Training Loss: {train_loss:.4f}')
+    training_losses.append(train_loss)
+
+    val_loss = val_loop(obj_embedder=obj_embedder, query_embedder=query_embedder,
+                        obj_input='object_ims', query_input='query_ims',
+                        cbm_query=cbm_query, cbm_object=cbm_object,
+                        dl=test_dl,
+                        device=device,
+                        use_cross_batch_mem=args.use_cbm)
+    print(f'Val loss: {val_loss:.4f}')
+    val_losses.append(val_loss)
+
+    if val_loss < best_loss:
+        best_loss = val_loss
+        print('Saving best weights...')
+        # save weights
+        torch.save([obj_extractor.kwargs, obj_embedder.state_dict()], os.path.join(
+            weights_path, 'best_obj_embedder.pth'))
+        torch.save([query_extractor.kwargs, query_embedder.state_dict()],
+                   os.path.join(weights_path, 'best_query_embedder.pth'))
 
     if args.reduce_lr:
         obj_scheduler.step()
@@ -186,13 +205,6 @@ for e in range(epoch):
                                 device=device,
                                 output_path=output_path)
 
-    if metrics_results['NDCG'] > best_NDCG:
-        best_NDCG = metrics_results['NDCG']
-        # save weights
-        torch.save([obj_extractor.kwargs, obj_embedder.state_dict()], os.path.join(
-            weights_path, 'best_obj_embedder.pth'))
-        torch.save([query_extractor.kwargs, query_embedder.state_dict()], os.path.join(
-            weights_path, 'best_query_embedder.pth'))
     eval_results.append(metrics_results)
 
 
@@ -224,5 +236,5 @@ for res in eval_results:
     P10s.append(res['P@10'])
     NDCGs.append(res['NDCG'])
     mAPs.append(res['mAP'])
-plot_logs(training_losses, NNs, P10s, NDCGs,
+plot_logs(training_losses, val_losses, NNs, P10s, NDCGs,
           mAPs, f'{output_path}/results.png')
