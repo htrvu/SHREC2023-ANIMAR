@@ -40,7 +40,7 @@ def DatasetBatchInfo(batch):
         DatasetItemInfo(v, 4)
     print()
 
-class BaseShrecDataset(data.Dataset):
+class BaseRingsDataset(data.Dataset):
     def __init__(self,
                  csv_path,
                  root,
@@ -86,6 +86,8 @@ class BaseShrecDataset(data.Dataset):
             self.render_transforms = tvtf.Compose([
                 tvtf.CenterCrop((352, 352)),
                 tvtf.Resize((224, 224)),
+                tvtf.RandomHorizontalFlip(p=0.25),
+                tvtf.RandomRotation(5),
                 tvtf.ToTensor(),
                 tvtf.Normalize(mean=[0.485, 0.456, 0.406],
                                std=[0.229, 0.224, 0.225]),
@@ -129,7 +131,7 @@ class BaseShrecDataset(data.Dataset):
     def collate_fn(self, batch):
         raise NotImplementedError
 
-class SHREC23_Rings_RenderOnly_ImageQuery(BaseShrecDataset):
+class SHREC23_Rings_RenderOnly_ImageQuery(BaseRingsDataset):
     def __getitem__(self, i):
         data = self.data[i]['render']
         obj_id = self.csv_data.iloc[i]['obj_id']
@@ -164,7 +166,7 @@ class SHREC23_Rings_RenderOnly_ImageQuery(BaseShrecDataset):
 
 
 
-class SHREC23_Rings_RenderOnly_TextQuery(BaseShrecDataset):
+class SHREC23_Rings_RenderOnly_TextQuery(BaseRingsDataset):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")

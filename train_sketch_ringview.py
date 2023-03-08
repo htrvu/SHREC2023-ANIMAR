@@ -138,8 +138,8 @@ optimizer2 = torch.optim.AdamW(
 
 # Set Scheduler
 if args.reduce_lr:
-    obj_scheduler = StepLR(optimizer1, step_size=10, gamma=0.333)
-    query_scheduler = StepLR(optimizer2, step_size=10, gamma=0.333)
+    obj_scheduler = StepLR(optimizer1, step_size=10, gamma=0.3333)
+    query_scheduler = StepLR(optimizer2, step_size=10, gamma=0.3333)
 
     prev_obj_lr, prev_query_lr = optimizer1.param_groups[
         0]['lr'], optimizer2.param_groups[0]['lr']
