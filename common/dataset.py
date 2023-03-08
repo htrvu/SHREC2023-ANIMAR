@@ -4,6 +4,8 @@ import pandas as pd
 import torch
 from torchvision import transforms as tvtf
 from torch.utils import data
+from transformers import AutoTokenizer
+
 
 class SHREC23_Test_SketchesData(data.Dataset):
     def __init__(self, skt_data_path, csv_data_path):
@@ -36,4 +38,34 @@ class SHREC23_Test_SketchesData(data.Dataset):
             'query_ims': torch.stack([item['query_im'] for item in batch]),
             'query_ids': [item['query_id'] for item in batch],
         }
+        return batch
+    
+class SHREC23_Test_TextData(data.Dataset):
+    def __init__(self, csv_data_path):
+        self.csv_data = pd.read_csv(csv_data_path)
+        self.ids = self.csv_data.index
+        self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+
+            
+    def __len__(self):
+        return len(self.ids)
+
+    def __getitem__(self, idx):
+        txt_id = self.csv_data.iloc[idx]['text_id']
+        query_text = self.csv_data.iloc[idx]['tex']
+
+        
+        return {
+            "query_text": query_text,
+            "query_id": txt_id,
+        }
+    
+    def collate_fn(self, batch):
+        batch = {
+            "query_texts": [x['query_text'] for x in batch],
+            'query_ids': [item['query_id'] for item in batch],
+        }
+        batch["tokens"] = self.tokenizer.batch_encode_plus(
+            batch["query_texts"], padding="longest", return_tensors="pt"
+        )
         return batch
