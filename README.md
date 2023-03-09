@@ -225,7 +225,30 @@ python retrieve_sketch_ringview.py \
 ```
 ### 5.2. Text-based
 
-...
+- Point-cloud method:
+
+```
+python retrieve_prompt_pcl.py \
+    --info-json exps/pcl_exp_0/args.json \
+    --pcl-model pointmlp \
+    --obj-data-path data/TextANIMAR2023/3D_Model_References/References \
+    --obj-csv-path data/TextANIMAR2023/3D_Model_References/References/References.csv \
+    --txt-csv-path data/TextANIMAR2023/Test/TextQuery_Test.csv \
+    --obj-weight exps/pcl_exp_0/weights/best_obj_embedder.pth \
+    --skt-weight pcl_exp_0/weights/best_query_embedder.pth
+```
+
+- Ring-view method
+
+```
+python retrieve_prompt_ringview.py \
+    --info-json exps/ringview_exp_13/args.json \
+    --rings-path data/TextANIMAR2023/3D_Model_References/generated_sketches \
+    --obj-csv-path data/TextANIMAR2023/3D_Model_References/References/References.csv \
+    --txt-csv-path data/TextANIMAR2023/Test/TextQuery_Test.csv \
+    --obj-weight exps/ringview_exp_13/weights/best_obj_embedder.pth \
+    --txt-weight exps/ringview_exp_13/weights/best_query_embedder.pth
+```
 
 ## 6. Ensemble query results
 
