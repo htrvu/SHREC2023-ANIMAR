@@ -51,8 +51,8 @@ class SHREC23_Test_TextData(data.Dataset):
         return len(self.ids)
 
     def __getitem__(self, idx):
-        txt_id = self.csv_data.iloc[idx]['text_id']
-        query_text = self.csv_data.iloc[idx]['tex']
+        txt_id = self.csv_data.iloc[idx]['ID']
+        query_text = self.csv_data.iloc[idx]['Description']
 
         
         return {
