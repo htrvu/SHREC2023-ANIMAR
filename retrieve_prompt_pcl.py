@@ -20,9 +20,9 @@ from utils.plot_logs import plot_logs
 python retrieve_prompt_pcl.py \
     --info-json exps/pcl_exp_0/args.json \
     --pcl-model pointmlp \
-    --obj-data-path data/SketchANIMAR2023/3D_Model_References/References \
-    --obj-csv-path data/SketchANIMAR2023/3D_Model_References/References/References.csv \
-    --txt-csv-path data/SketchANIMAR2023/Test/SketchQuery_Test.csv \
+    --obj-data-path data/TextANIMAR2023/3D_Model_References/References \
+    --obj-csv-path data/TextANIMAR2023/3D_Model_References/References/References.csv \
+    --txt-csv-path data/TextANIMAR2023/Test/TextQuery_Test.csv \
     --obj-weight exps/pcl_exp_0/weights/best_obj_embedder.pth \
     --skt-weight pcl_exp_0/weights/best_query_embedder.pth
 

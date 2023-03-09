@@ -7,23 +7,16 @@ from pytorch_metric_learning.losses import NTXentLoss, CrossBatchMemory
 from common.dataset import SHREC23_Test_TextData
 from common.predict import predict
 
-from pointcloud.dataset import SHREC23_PointCloudData_TextQuery, SHREC23_Test_PointCloudData_Objects
-from pointcloud.curvenet import CurveNet
-
 from common.models import BertExtractor, MLP
-from common.test import test_loop
-from common.train import train_loop
-from pointcloud.pointmlp import PointMLP, PointMLPElite
 from ringnet.dataset import SHREC23_Test_Rings_Objects
 from ringnet.models import Base3DObjectRingsExtractor
-from utils.plot_logs import plot_logs
 
 '''
 python retrieve_prompt_ringview.py \
     --info-json exps/ringview_exp_13/args.json \
-    --rings-path data/SketchANIMAR2023/3D_Model_References/generated_sketches \
-    --obj-csv-path data/SketchANIMAR2023/3D_Model_References/References/References.csv \
-    --txt-csv-path data/SketchANIMAR2023/Test/SketchQuery_Test.csv \
+    --rings-path data/TextANIMAR2023/3D_Model_References/generated_sketches \
+    --obj-csv-path data/TextANIMAR2023/3D_Model_References/References/References.csv \
+    --txt-csv-path data/TextANIMAR2023/Test/TextQuery_Test.csv \
     --obj-weight exps/ringview_exp_13/weights/best_obj_embedder.pth \
     --txt-weight exps/ringview_exp_13/weights/best_query_embedder.pth
 
