@@ -4,6 +4,7 @@ import os
 import torch
 from torch.utils.data import DataLoader
 from pytorch_metric_learning.losses import NTXentLoss, CrossBatchMemory
+from torch.optim.lr_scheduler import StepLR
 
 from pointcloud.dataset import SHREC23_PointCloudData_TextQuery
 from pointcloud.curvenet import CurveNet
