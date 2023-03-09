@@ -20,11 +20,11 @@ from utils.plot_logs import plot_logs
 
 '''
 python retrieve_prompt_ringview.py \
-    --info-json exps/ringview_exp_12/args.json \
+    --info-json exps/ringview_exp_13/args.json \
     --obj-csv-path data/SketchANIMAR2023/3D_Model_References/References/References.csv \
     --txt-csv-path data/SketchANIMAR2023/Test/SketchQuery_Test.csv \
-    --obj-weight exps/ringview_exp_12/weights/best_obj_embedder.pth \
-    --skt-weight exps/ringview_exp_12/weights/best_query_embedder.pth
+    --obj-weight exps/ringview_exp_13/weights/best_obj_embedder.pth \
+    --txt-weight exps/ringview_exp_13/weights/best_query_embedder.pth
 
 '''
 
@@ -46,7 +46,7 @@ with open(args.info_json) as json_file:
 ## Model parameters
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 obj_weight=args.obj_weight
-query_weight=args.query_weight
+query_weight=args.txt_weight
 batch_size = arg_dict['batch_size']
 latent_dim = arg_dict['latent_dim']
 obj_weight=args.obj_weight
