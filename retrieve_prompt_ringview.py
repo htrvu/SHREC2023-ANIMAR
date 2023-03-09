@@ -112,7 +112,7 @@ txt_dl = DataLoader(txt_ds, batch_size=batch_size,
 
 # Inference
 predict(obj_embedder=obj_embedder, query_embedder=query_embedder,
-        obj_input='pointclouds', query_input='tokens',
+        obj_input='object_ims', query_input='tokens',
         obj_dl=obj_dl,
         query_dl=txt_dl,
         dimension=latent_dim,
