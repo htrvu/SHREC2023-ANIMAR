@@ -88,7 +88,7 @@ else:
     raise NotImplementedError
 
 ## For Text Extraction
-query_extractor = BertExtractor() # OOM, so freeze for baseline
+query_extractor = BertExtractor(arg_dict['text_model']) # OOM, so freeze for baseline
 
 ## Apply weights
 ### For Object Extraction
