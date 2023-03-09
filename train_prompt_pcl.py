@@ -17,6 +17,7 @@ from utils.plot_logs import plot_logs
 '''
 python train_prompt_pcl.py \
     --pcl-model pointmlp \
+    --text-model "sentence-transformers/all-MiniLM-L6-v2" \
     --obj-data-path data/TextANIMAR2023/3D_Model_References/References \
     --train-csv-path data/csv/train_tex.csv \
     --test-csv-path data/csv/test_tex.csv \
@@ -31,7 +32,8 @@ python train_prompt_pcl.py \
 parser = argparse.ArgumentParser()
 parser.add_argument('--pcl-model', type=str,
                     default='curvenet', choices=['curvenet', 'pointmlp', 'pointmlpelite'], help='Model for point cloud feature extraction')
-
+parser.add_argument('--text-model', type=str,
+                    default='bert-base-uncased', help='Model for text feature extraction')
 parser.add_argument('--obj-data-path', type=str,
                     required=True, help='Path to 3D objects folder')
 parser.add_argument('--train-csv-path', type=str, required=True,
@@ -99,7 +101,7 @@ obj_embedder = MLP(obj_extractor, latent_dim=latent_dim).to(device)
 
 
 # Query model extractor
-query_extractor = BertExtractor() # OOM, so freeze for baseline
+query_extractor = BertExtractor(version=args.text_model) # OOM, so freeze for baseline
 query_embedder = MLP(query_extractor,latent_dim=latent_dim).to(device)
 
 # Load data

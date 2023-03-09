@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import models
 from transformers import AutoModel
+from sentence_transformers import SentenceTransformer, util
 
 class Extractor(nn.Module):
     def freeze(self):
@@ -36,7 +37,6 @@ class BertExtractor(LanguageExtractor):
         )
         feature = transformer_out.last_hidden_state
         return feature
-
     
 class ImageExtractor(Extractor):
     def get_feature_map(self, x):
