@@ -21,6 +21,7 @@ from utils.plot_logs import plot_logs
 '''
 python retrieve_prompt_ringview.py \
     --info-json exps/ringview_exp_13/args.json \
+    --rings-path data/SketchANIMAR2023/3D_Model_References/generated_sketches \
     --obj-csv-path data/SketchANIMAR2023/3D_Model_References/References/References.csv \
     --txt-csv-path data/SketchANIMAR2023/Test/SketchQuery_Test.csv \
     --obj-weight exps/ringview_exp_13/weights/best_obj_embedder.pth \
@@ -30,6 +31,7 @@ python retrieve_prompt_ringview.py \
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--info-json', type=str, required=True, help='Path to model infomation json')
+parser.add_argument('--rings-path', type=str, required=True, help='Path to parent folder of ringviews')
 parser.add_argument('--output-path', type=str, default='./prompt', help='Path to output folder')
 parser.add_argument('--obj-csv-path', type=str, required=True, help='Path to CSV file of objects')
 parser.add_argument('--txt-csv-path', type=str, help='Path to CSV file of prompts')
