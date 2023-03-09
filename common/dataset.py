@@ -5,6 +5,7 @@ import torch
 from torchvision import transforms as tvtf
 from torch.utils import data
 from transformers import AutoTokenizer
+from utils.text_preprocess import preprocess
 
 
 class SHREC23_Test_SketchesData(data.Dataset):
@@ -43,7 +44,6 @@ class SHREC23_Test_SketchesData(data.Dataset):
 class SHREC23_Test_TextData(data.Dataset):
     def __init__(self, csv_data_path):
         self.csv_data = pd.read_csv(csv_data_path,delimiter=';')
-        print(self.csv_data)
         self.ids = self.csv_data.index
         
         self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
@@ -54,7 +54,9 @@ class SHREC23_Test_TextData(data.Dataset):
 
     def __getitem__(self, idx):
         txt_id = self.csv_data.iloc[idx]['ID']
-        query_text = self.csv_data.iloc[idx]['Description']
+        query_text = self.csv_data.iloc[idx]['Description'].apply(preprocess)
+        print(query_text)
+        
 
         
         return {
