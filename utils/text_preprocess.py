@@ -8,6 +8,7 @@ from nltk.stem.porter import PorterStemmer
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
+nltk.download('stopwords')
 lemmatizer = WordNetLemmatizer()
 #stemmer = PorterStemmer()
  
