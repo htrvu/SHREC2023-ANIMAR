@@ -18,7 +18,7 @@ def print_results(results):
         print(f'- {metric}: {value}')
 
 
-def save_submission(result_json_path,output_path):
+def save_submission(result_json_path,output_path): 
     submit_dict={}
     with open(result_json_path) as f:
         result = json.load(f)

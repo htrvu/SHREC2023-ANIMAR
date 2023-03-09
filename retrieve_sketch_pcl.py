@@ -14,13 +14,28 @@ import os
 import json
 import argparse
 
+'''
+python retrieve_sketch_pcl.py \
+    --pcl-model pointmlp \
+    --cnn-backbone efficientnet_v2_s\
+    --output-path exps \
+    --obj-data-path /kaggle/input/shrec23/SketchANIMAR2023/3D_Model_References/References \
+    --skt-data-path /kaggle/input/shrec23/SketchANIMAR2023/Train/CroppedSketchQuery_Train \
+    --skt-csv-path /kaggle/input/shrec23/csv/test_skt.csv \
+    --batch-size 4 \
+    --latent-dim 128 \
+    --obj-weight exps/pcl_exp_0/weights/best_obj_embedder.pth \
+    --skt-weight pcl_exp_0/weights/best_query_embedder.pth
+
+'''
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--info-json', type=str, required=True, help='Path to model infomation json')
 parser.add_argument('--output-path', type=str, default='./predicts', help='Path to output folder')
 parser.add_argument('--obj-data-path', type=str, required=True, help='Path to 3D objects folder')
 parser.add_argument('--obj-csv-path', type=str, required=True, help='Path to CSV file of objects')
 parser.add_argument('--skt-data-path', type=str, required=True, help='Path to 3D sketches folder')
-parser.add_argument('--skt-csv-path', type=str, help='Path to CSV file of sketches')
+parser.add_argument('--skt-csv-path', type=str, help='Path to CSV test file of sketches')
 parser.add_argument('--obj-weight', type=str, required=True, help='Path to 3D object weight')
 parser.add_argument('--skt-weight', type=str, required=True, help='Path to sketch weight')
 
