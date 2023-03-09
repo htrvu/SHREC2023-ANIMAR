@@ -8,6 +8,8 @@ import os
 from transformers import AutoTokenizer
 
 from transformers.tokenization_utils_base import BatchEncoding
+
+from utils.text_preprocess import preprocess
 os.environ[
     "TOKENIZERS_PARALLELISM"
 ] = "true"  # https://github.com/huggingface/transformers/issues/5486
@@ -174,7 +176,7 @@ class SHREC23_Rings_RenderOnly_TextQuery(BaseShrecDataset):
         query_text = self.tex[i]
         data = self.data[i]['render']
         obj_id = self.csv_data.iloc[i]['obj_id']
-        txt_id = self.csv_data.iloc[i]['text_id']
+        txt_id = preprocess(self.csv_data.iloc[i]['text_id'])
         ims = torch.cat([
             torch.cat([
                 self.render_transforms(

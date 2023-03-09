@@ -54,7 +54,7 @@ class SHREC23_Test_TextData(data.Dataset):
 
     def __getitem__(self, idx):
         txt_id = self.csv_data.iloc[idx]['ID']
-        query_text = self.csv_data.iloc[idx]['Description'].apply(preprocess)
+        query_text = preprocess(self.csv_data.iloc[idx]['Description'])
         print(query_text)
         
 
