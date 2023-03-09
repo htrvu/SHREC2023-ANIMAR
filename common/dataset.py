@@ -44,6 +44,7 @@ class SHREC23_Test_TextData(data.Dataset):
     def __init__(self, csv_data_path):
         self.csv_data = pd.read_csv(csv_data_path)
         self.ids = self.csv_data.index
+        print(self.ids)
         self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
 
             
