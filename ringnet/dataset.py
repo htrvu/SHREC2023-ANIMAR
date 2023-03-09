@@ -201,8 +201,7 @@ class SHREC23_Rings_RenderOnly_TextQuery(BaseShrecDataset):
             "gallery_ids": [x['gallery_id'] for x in batch],
             "query_ids": [x['query_id'] for x in batch],
         }
-        #debug
-        print(batch_dict['query_texts'])
+
         
         batch_dict["tokens"] = self.tokenizer.batch_encode_plus(
             batch_dict["query_texts"], padding="longest", return_tensors="pt"
