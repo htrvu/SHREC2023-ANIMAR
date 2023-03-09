@@ -68,6 +68,9 @@ class SHREC23_Test_TextData(data.Dataset):
             "query_texts": [preprocess(x['query_text']) for x in batch],
             'query_ids': [item['query_id'] for item in batch],
         }
+        #debug
+        print(batch['query_texts'])
+        
         batch["tokens"] = self.tokenizer.batch_encode_plus(
             batch["query_texts"], padding="longest", return_tensors="pt"
         )
