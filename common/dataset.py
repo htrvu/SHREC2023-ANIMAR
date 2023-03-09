@@ -55,7 +55,6 @@ class SHREC23_Test_TextData(data.Dataset):
     def __getitem__(self, idx):
         txt_id = self.csv_data.iloc[idx]['ID']
         query_text = preprocess(self.csv_data.iloc[idx]['Description'])
-        print(query_text)
         
 
         
@@ -66,7 +65,7 @@ class SHREC23_Test_TextData(data.Dataset):
     
     def collate_fn(self, batch):
         batch = {
-            "query_texts": [x['query_text'] for x in batch],
+            "query_texts": [preprocess(x['query_text']) for x in batch],
             'query_ids': [item['query_id'] for item in batch],
         }
         batch["tokens"] = self.tokenizer.batch_encode_plus(

@@ -197,7 +197,7 @@ class SHREC23_Rings_RenderOnly_TextQuery(BaseShrecDataset):
     def collate_fn(self, batch):
         batch_dict = {
             "object_ims": torch.stack([x['object_im'] for x in batch]),
-            "query_texts": [x['query_text'] for x in batch],
+            "query_texts": [preprocess(x['query_text']) for x in batch],
             "gallery_ids": [x['gallery_id'] for x in batch],
             "query_ids": [x['query_id'] for x in batch],
         }
