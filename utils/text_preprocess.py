@@ -10,6 +10,7 @@ from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 nltk.download('stopwords')
 nltk.download('punkt')
+nltk.download('wordnet')
 lemmatizer = WordNetLemmatizer()
 #stemmer = PorterStemmer()
  
