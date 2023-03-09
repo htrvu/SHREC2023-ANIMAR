@@ -16,8 +16,11 @@ lemmatizer = WordNetLemmatizer()
  
 
 def trunc_verb(text):
-    index = text.index('is')
-    text=text[:index]
+    try:
+        index = text.index(' is ')
+        text=text[:index]
+    except:
+        pass
     return text
 def text_lowercase(text):
     return text.lower()
