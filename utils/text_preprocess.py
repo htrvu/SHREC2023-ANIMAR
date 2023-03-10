@@ -46,6 +46,15 @@ def trunc_verb(text):
     except:
         pass
     return text
+def double_obj(text):
+    tmp=text.split()
+    try:
+        index = tmp.index('is')
+        tmp[index-1]=tmp[index-1]+' '+tmp[index-1]
+        text=' '.join(tmp)
+    except:
+        pass
+    return text
 def text_lowercase(text):
     return text.lower()
 def remove_numbers(text):
@@ -76,9 +85,19 @@ def preprocess(text):
     text=text_lowercase(text)
     text=convert_number(text)
     text=remove_punctuation(text)
+    text=double_obj(text)
     text=remove_stopwords(text)
     text=lemmatize_word(text)
     return text
+def synonym_augmented(text):
+    sym={
+        'peacock':['peafowl','peahens'],
+        #'warthog':['pig', 'boar','sow'],
+        'turtle:':['terrapin','tortoise'],
 
+
+
+
+    }
 if __name__=='__main__':
     print(preprocess('A saltwater crocodile is swimming in short bursts'))
