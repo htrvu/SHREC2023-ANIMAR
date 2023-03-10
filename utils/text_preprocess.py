@@ -14,8 +14,8 @@ nltk.download('wordnet')
 lemmatizer = WordNetLemmatizer()
 #stemmer = PorterStemmer()
 
-import inflect
-p = inflect.engine()
+#import inflect
+#p = inflect.engine()
  
 # convert number into words
 def convert_number(text):
@@ -40,9 +40,11 @@ def convert_number(text):
     return temp_str
 
 def trunc_verb(text):
+    tmp=text.split()
     try:
-        index = text.index(' is ')
-        text=text[:index]
+        index = tmp.index('is')
+        tmp=tmp[:index+2]
+        text=' '.join(tmp)
     except:
         pass
     return text
@@ -81,11 +83,11 @@ def lemmatize_word(text):
     return ' '.join(lemmas)
 
 def preprocess(text):
-    #text=trunc_verb(text)
     text=text_lowercase(text)
-    text=convert_number(text)
+    #text=convert_number(text)
     text=remove_punctuation(text)
     text=double_obj(text)
+    text=trunc_verb(text)
     text=remove_stopwords(text)
     text=lemmatize_word(text)
     return text
@@ -94,10 +96,6 @@ def synonym_augmented(text):
         'peacock':['peafowl','peahens'],
         #'warthog':['pig', 'boar','sow'],
         'turtle:':['terrapin','tortoise'],
-
-
-
-
     }
 if __name__=='__main__':
-    print(preprocess('A saltwater crocodile is swimming in short bursts'))
+    print(preprocess('A small sparrow is standing on a branch and singing'))
