@@ -84,8 +84,9 @@ class BaseRingsDataset(data.Dataset):
 
         if is_train:
             self.render_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
                 tvtf.RandomHorizontalFlip(p=0.25),
                 tvtf.RandomRotation(5),
                 tvtf.ToTensor(),
@@ -94,21 +95,24 @@ class BaseRingsDataset(data.Dataset):
             ])
 
             self.mask_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
             ])
         else:
             self.render_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
                 tvtf.ToTensor(),
                 tvtf.Normalize(mean=[0.485, 0.456, 0.406],
                                std=[0.229, 0.224, 0.225]),
             ])
 
             self.mask_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
             ])
 
         if vis:
@@ -234,29 +238,33 @@ class SHREC23_Test_Rings_Objects(data.Dataset):
 
         if is_train:
             self.render_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
                 tvtf.ToTensor(),
                 tvtf.Normalize(mean=[0.485, 0.456, 0.406],
                                std=[0.229, 0.224, 0.225]),
             ])
 
             self.mask_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
             ])
         else:
             self.render_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
                 tvtf.ToTensor(),
                 tvtf.Normalize(mean=[0.485, 0.456, 0.406],
                                std=[0.229, 0.224, 0.225]),
             ])
 
             self.mask_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
             ])
 
         if vis:
