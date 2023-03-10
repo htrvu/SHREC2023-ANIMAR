@@ -90,6 +90,7 @@ def preprocess(text):
     text=trunc_verb(text)
     text=remove_stopwords(text)
     text=lemmatize_word(text)
+    text=synonym_augmented(text)
     return text
 def synonym_augmented(text):
     sym={
@@ -97,5 +98,11 @@ def synonym_augmented(text):
         #'warthog':['pig', 'boar','sow'],
         'turtle:':['terrapin','tortoise'],
     }
+    for i in sym:
+        print(i)
+        for j in sym[i]:
+            text=text.replace(j,i)
+    return text
+
 if __name__=='__main__':
-    print(preprocess('A small sparrow is standing on a branch and singing'))
+    print(preprocess('A young Indian peafowl is foraging for food on the ground'))
