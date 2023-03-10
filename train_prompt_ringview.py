@@ -36,7 +36,7 @@ python train_prompt_ringview.py \
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--view-cnn-backbone', type=str, default='efficientnet_b2',
-                    choices=[*ResNetExtractor.arch.keys(), *EfficientNetExtractor.arch.keys()],  help='Model for ringview feature extraction')
+                    choices=[*ResNetExtractor.arch.keys(), *EfficientNetExtractor.arch.keys(),*ClipVisionExtractor.arch],  help='Model for ringview feature extraction')
 parser.add_argument('--text-model', type=str,
                     default='bert-base-uncased', help='Model for text feature extraction')
 parser.add_argument('--rings-path', type=str, required=True,
