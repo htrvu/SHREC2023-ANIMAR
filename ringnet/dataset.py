@@ -5,7 +5,7 @@ from torchvision import transforms as tvtf
 import numpy as np
 import pandas as pd 
 import os
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer,CLIPTokenizer
 
 from transformers.tokenization_utils_base import BatchEncoding
 
@@ -169,7 +169,9 @@ class SHREC23_Rings_RenderOnly_ImageQuery(BaseShrecDataset):
 class SHREC23_Rings_RenderOnly_TextQuery(BaseShrecDataset):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+        #self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+        self.tokenizer = CLIPTokenizer.from_pretrained("openai/clip-vit-base-patch32")
+
         
                  
     def __getitem__(self, i):

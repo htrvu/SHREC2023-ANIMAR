@@ -4,6 +4,7 @@ import torch.nn.functional as F
 from torchvision import models
 from transformers import AutoModel
 from sentence_transformers import SentenceTransformer, util
+from transformers import CLIPProcessor, CLIPTextModel,CLIPVisionModel
 
 class Extractor(nn.Module):
     def freeze(self):
@@ -26,6 +27,37 @@ class BertExtractor(LanguageExtractor):
     def __init__(self, version='bert-base-uncased', use_pretrained=True, is_frozen=False):
         super().__init__()
         self.extractor = AutoModel.from_pretrained(version)
+        self.feature_dim = self.extractor.config.hidden_size
+        if is_frozen:
+            self.freeze()
+
+    def get_feature_map(self, x):
+        input_ids, attention_mask = x["input_ids"], x["attention_mask"]
+        transformer_out = self.extractor(
+            input_ids=input_ids, attention_mask=attention_mask
+        )
+        feature = transformer_out.last_hidden_state
+        return feature
+    
+class ClipTextExtractor(LanguageExtractor):
+    def __init__(self, version='openai/clip-vit-base-patch32', use_pretrained=True, is_frozen=False):
+        super().__init__()
+        self.extractor = CLIPTextModel.from_pretrained(version)
+        self.feature_dim = self.extractor.config.hidden_size
+        if is_frozen:
+            self.freeze()
+
+    def get_feature_map(self, x):
+        input_ids, attention_mask = x["input_ids"], x["attention_mask"]
+        transformer_out = self.extractor(
+            input_ids=input_ids, attention_mask=attention_mask
+        )
+        feature = transformer_out.last_hidden_state
+        return feature
+class ClipVisionExtractor(LanguageExtractor):
+    def __init__(self, version='openai/clip-vit-base-patch32', use_pretrained=True, is_frozen=False):
+        super().__init__()
+        self.extractor = CLIPVisionModel.from_pretrained(version)
         self.feature_dim = self.extractor.config.hidden_size
         if is_frozen:
             self.freeze()

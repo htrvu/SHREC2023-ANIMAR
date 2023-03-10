@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from common.models import Extractor, BertExtractor, ResNetExtractor, EfficientNetExtractor
+from common.models import ClipVisionExtractor, Extractor, BertExtractor, ResNetExtractor, EfficientNetExtractor
 
 __all__ = [ 'BaseRingExtractor',
             'Base3DObjectRingsExtractor']
@@ -36,6 +36,8 @@ class BaseRingExtractor(nn.Module):
             self.cnn = ResNetExtractor(view_cnn_backbone)
         elif view_cnn_backbone.startswith('efficientnet'):
             self.cnn = EfficientNetExtractor(view_cnn_backbone)
+        elif view_cnn_backbone.startswith('openai'):
+            self.cnn = ClipVisionExtractor(view_cnn_backbone)
         else:
             raise NotImplementedError
         

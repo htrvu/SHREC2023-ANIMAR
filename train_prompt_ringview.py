@@ -9,7 +9,7 @@ from torch.optim.lr_scheduler import StepLR
 from ringnet.dataset import SHREC23_Rings_RenderOnly_TextQuery
 from ringnet.models import Base3DObjectRingsExtractor
 
-from common.models import BertExtractor, MLP, EfficientNetExtractor, ResNetExtractor
+from common.models import BertExtractor, MLP, EfficientNetExtractor, ResNetExtractor,ClipTextExtractor,ClipVisionExtractor
 from common.test import test_loop
 from common.train import train_loop
 
@@ -17,8 +17,8 @@ from utils.plot_logs import plot_logs
 
 '''
 python train_prompt_ringview.py \
-    --view-cnn-backbone efficientnet_v2_s \
-    --text-model "sentence-transformers/all-MiniLM-L6-v2" \
+    --view-cnn-backbone openai/clip-vit-base-patch32 \
+    --text-model openai/clip-vit-base-patch32 \
     --rings-path data/TextANIMAR2023/3D_Model_References/generated_sketches \
     --used-rings 3,4 \
     --train-csv-path data/csv/train_tex.csv \
@@ -115,7 +115,12 @@ obj_extractor = Base3DObjectRingsExtractor(
 obj_embedder = MLP(obj_extractor, latent_dim=latent_dim).to(device)
 
 # Query model extractor
-query_extractor = BertExtractor(version=args.text_model,is_frozen=True) # OOM, so freeze for baseline
+if args.text_model.startswith('openai'):
+    query_extractor = ClipTextExtractor(version=args.text_model,is_frozen=True) # OOM, so freeze for baseline
+elif args.text_model.startswith('bert'):
+    query_extractor = BertExtractor(version=args.text_model,is_frozen=True) 
+else:
+    raise NotImplementedError
 query_embedder = MLP(query_extractor,latent_dim=latent_dim).to(device)
 
 # Data loader

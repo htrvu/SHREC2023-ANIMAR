@@ -99,7 +99,6 @@ def synonym_augmented(text):
         'turtle:':['terrapin','tortoise'],
     }
     for i in sym:
-        print(i)
         for j in sym[i]:
             text=text.replace(j,i)
     return text
