@@ -4,7 +4,7 @@ import pandas as pd
 import torch
 from torchvision import transforms as tvtf
 from torch.utils import data
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer,CLIPTokenizer
 from utils.text_preprocess import preprocess
 
 
@@ -46,7 +46,9 @@ class SHREC23_Test_TextData(data.Dataset):
         self.csv_data = pd.read_csv(csv_data_path,delimiter=';')
         self.ids = self.csv_data.index
         
-        self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+        
+        #self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+        self.tokenizer = CLIPTokenizer.from_pretrained("openai/clip-vit-base-patch32")
 
             
     def __len__(self):

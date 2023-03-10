@@ -64,6 +64,7 @@ class ClipVisionExtractor(LanguageExtractor):
             self.freeze()
 
     def get_feature_map(self, x):
+        print(x)
         input_ids, attention_mask = x["input_ids"], x["attention_mask"]
         transformer_out = self.extractor(
             input_ids=input_ids, attention_mask=attention_mask
