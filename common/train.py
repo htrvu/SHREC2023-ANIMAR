@@ -79,6 +79,34 @@ def train_loop(obj_embedder, query_embedder, dl, obj_input, query_input, cbm_que
         progress_bar.set_description(f"Step: {step}/{len(dl)}, Loss: {loss.item():.4f}, Elapsed: {time.time() - start_time:.4f}")
     return loss_avg / len(dl)
 
+def train_loop_arcface(obj_embedder, query_embedder, dl, obj_input, query_input, loss_func, obj_optimizer, query_optimizer, device):
+    start_time = time.time()
+    loss_avg = 0
+    progress_bar = tqdm(enumerate(dl), total=len(dl))
+    obj_embedder.train()
+    query_embedder.train()
+    for step, batch in progress_bar:
+
+        obj_emb = obj_embedder(batch[obj_input].to(device))
+        query_emb = query_embedder(batch[query_input].to(device))
+        labels = batch['classes'].to(device)
+
+        obj_optimizer.zero_grad()
+        obj_loss = loss_func(obj_emb, labels)
+        obj_loss.backward()
+        obj_optimizer.step()
+
+        query_optimizer.zero_grad()
+        query_loss = loss_func(query_emb, labels)
+        query_loss.backward()
+        query_optimizer.step()
+
+        cur_loss = (obj_loss.item() + query_loss.item()) / 2
+        loss_avg += cur_loss
+
+        progress_bar.set_description(f"Step: {step}/{len(dl)}, Loss: {cur_loss:.4f}, Elapsed: {time.time() - start_time:.4f}")
+    return loss_avg / len(dl)
+
 
 def val_loop(obj_embedder, query_embedder, dl, obj_input, query_input, cbm_query, cbm_object, device, use_cross_batch_mem=False):
     start_time = time.time()
@@ -120,4 +148,25 @@ def val_loop(obj_embedder, query_embedder, dl, obj_input, query_input, cbm_query
 
         loss_avg += loss.item()
         progress_bar.set_description(f"Step: {step}/{len(dl)}, Loss: {loss.item():.4f}, Elapsed: {time.time() - start_time:.4f}")
+    return loss_avg / len(dl)
+
+def val_loop_arcface(obj_embedder, query_embedder, dl, obj_input, query_input, loss_func, device):
+    start_time = time.time()
+    loss_avg = 0
+    progress_bar = tqdm(enumerate(dl), total=len(dl))
+    obj_embedder.eval()
+    query_embedder.eval()
+    for step, batch in progress_bar:
+
+        obj_emb = obj_embedder(batch[obj_input].to(device))
+        query_emb = query_embedder(batch[query_input].to(device))
+        labels = batch['classes'].to(device)
+
+        obj_loss = loss_func(obj_emb, labels)
+        query_loss = loss_func(query_emb, labels)
+
+        cur_loss = (obj_loss.item() + query_loss.item()) / 2
+        loss_avg += cur_loss
+
+        progress_bar.set_description(f"Step: {step}/{len(dl)}, Loss: {cur_loss:.4f}, Elapsed: {time.time() - start_time:.4f}")
     return loss_avg / len(dl)

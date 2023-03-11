@@ -140,6 +140,7 @@ class SHREC23_Rings_RenderOnly_ImageQuery(BaseRingsDataset):
         data = self.data[i]['render']
         obj_id = self.csv_data.iloc[i]['obj_id']
         skt_id = self.csv_data.iloc[i]['sketch_id']
+        cls = self.csv_data.iloc[i]['class']
         query_impath = self.skt_filenames[i]
         query_im = Image.open(os.path.join(self.skt_root, query_impath)).convert('RGB')
         query_im = self.render_transforms(query_im)
@@ -157,6 +158,7 @@ class SHREC23_Rings_RenderOnly_ImageQuery(BaseRingsDataset):
             "query_im": query_im,
             "gallery_id": obj_id,
             "query_id": skt_id,
+            "class": cls,
         }
 
     def collate_fn(self, batch):
@@ -165,6 +167,7 @@ class SHREC23_Rings_RenderOnly_ImageQuery(BaseRingsDataset):
             "query_ims": torch.stack([x['query_im'] for x in batch]),
             "gallery_ids": [x['gallery_id'] for x in batch],
             "query_ids": [x['query_id'] for x in batch],
+            "classes": torch.LongTensor([x['class'] for x in batch]),
         }
         return batch_dict
 
