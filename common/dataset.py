@@ -14,8 +14,9 @@ class SHREC23_Test_SketchesData(data.Dataset):
         self.ids = self.csv_data.index
         self.skt_data_path = skt_data_path
         self.render_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
                 tvtf.ToTensor(),
                 tvtf.Normalize(mean=[0.485, 0.456, 0.406],
                                std=[0.229, 0.224, 0.225]),

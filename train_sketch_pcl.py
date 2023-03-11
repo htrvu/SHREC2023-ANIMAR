@@ -9,7 +9,7 @@ from pointcloud.pointmlp import PointMLP, PointMLPElite
 
 from common.models import ResNetExtractor, EfficientNetExtractor, MLP
 from common.test import test_loop
-from common.train import train_loop
+from common.train import train_loop, val_loop
 
 from utils.plot_logs import plot_logs
 
@@ -137,21 +137,42 @@ if args.reduce_lr:
         0]['lr'], optimizer2.param_groups[0]['lr']
 
 training_losses = []
+val_losses = []
 eval_results = []
-best_NDCG = 0
+# best_NDCG = 0
+best_loss = float('inf')
 
 for e in range(epoch):
     print(f'Epoch {e+1}/{epoch}:')
-    loss = train_loop(obj_embedder=obj_embedder, query_embedder=query_embedder,
-                      obj_input='pointclouds', query_input='query_ims',
-                      cbm_query=cbm_query, cbm_object=cbm_object,
-                      obj_optimizer=optimizer1, query_optimizer=optimizer2,
-                      dl=train_dl,
-                      device=device,
-                      use_cross_batch_mem=args.use_cbm)
-    print(f'Loss: {loss:.4f}')
-    training_losses.append(loss)
+    
+    train_loss = train_loop(obj_embedder=obj_embedder, query_embedder=query_embedder,
+                            obj_input='pointclouds', query_input='query_ims',
+                            cbm_query=cbm_query, cbm_object=cbm_object,
+                            obj_optimizer=optimizer1, query_optimizer=optimizer2,
+                            dl=train_dl,
+                            device=device,
+                            use_cross_batch_mem=args.use_cbm)
+    print(f'Training loss: {train_loss:.4f}')
+    training_losses.append(train_loss)
 
+    val_loss = val_loop(obj_embedder=obj_embedder, query_embedder=query_embedder,
+                        obj_input='pointclouds', query_input='query_ims',
+                        cbm_query=cbm_query, cbm_object=cbm_object,
+                        dl=test_dl,
+                        device=device,
+                        use_cross_batch_mem=args.use_cbm)
+    print(f'Val loss: {val_loss:.4f}')
+    val_losses.append(val_loss)
+    
+    if val_loss < best_loss:
+        best_loss = val_loss
+        print('Saving best weights...')
+        # save weights
+        torch.save([obj_embedder.state_dict()], os.path.join(
+            weights_path, 'best_obj_embedder.pth'))
+        torch.save([query_extractor.kwargs, query_embedder.state_dict()],
+                   os.path.join(weights_path, 'best_query_embedder.pth'))
+        
     if args.reduce_lr:
         obj_scheduler.step()
         query_scheduler.step()
@@ -177,15 +198,6 @@ for e in range(epoch):
             output_path = output_path,
             device=device)
     
-    if metrics_results['NDCG'] > best_NDCG:
-        best_NDCG = metrics_results['NDCG']
-        print('save best weights')
-        # save weights
-        torch.save([obj_embedder.state_dict()], os.path.join(
-            weights_path, 'best_obj_embedder.pth'))
-        torch.save([query_extractor.kwargs, query_embedder.state_dict()],
-                   os.path.join(weights_path, 'best_query_embedder.pth'))
-        
     eval_results.append(metrics_results)
 
 torch.save([obj_embedder.state_dict()], os.path.join(
@@ -216,5 +228,5 @@ for res in eval_results:
     P10s.append(res['P@10'])
     NDCGs.append(res['NDCG'])
     mAPs.append(res['mAP'])
-plot_logs(training_losses, NNs, P10s, NDCGs,
+plot_logs(training_losses, val_losses, NNs, P10s, NDCGs,
           mAPs, f'{output_path}/results.png')

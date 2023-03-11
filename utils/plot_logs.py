@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-def plot_logs(losses, NNs, P10s, NDCGs, mAPs, output_path):
+def plot_logs(training_losses, val_losses, NNs, P10s, NDCGs, mAPs, output_path):
     plt.figure(figsize=(15, 10))
     
     plt.subplot(2, 3, 1)
@@ -15,7 +15,7 @@ def plot_logs(losses, NNs, P10s, NDCGs, mAPs, output_path):
 
     plt.subplot(2, 3, 3)
     plt.title('Training loss')
-    plt.plot(losses)
+    plt.plot(training_losses)
     plt.xlabel('Epoch')
 
     plt.subplot(2, 3, 4)
@@ -26,6 +26,11 @@ def plot_logs(losses, NNs, P10s, NDCGs, mAPs, output_path):
     plt.subplot(2, 3, 5)
     plt.title('mAP')
     plt.plot(mAPs)
+    plt.xlabel('Epoch')
+
+    plt.subplot(2, 3, 6)
+    plt.title('Val loss')
+    plt.plot(val_losses)
     plt.xlabel('Epoch')
 
     plt.tight_layout()

@@ -42,7 +42,7 @@ def DatasetBatchInfo(batch):
         DatasetItemInfo(v, 4)
     print()
 
-class BaseShrecDataset(data.Dataset):
+class BaseRingsDataset(data.Dataset):
     def __init__(self,
                  csv_path,
                  root,
@@ -59,7 +59,7 @@ class BaseShrecDataset(data.Dataset):
         self.obj_ids = [x.split('.')[0] for x in self.obj_ids]
         self.skt_filenames = None if 'sket_filename' not in csv_data.columns else csv_data['sket_filename']
         self.tex = None if 'tex' not in csv_data.columns else csv_data['tex']
-
+        self.has_cls = 'class' in csv_data.columns
         assert self.skt_filenames is not None or self.tex is not None, 'Must provide either sketch or text'
 
         self.obj_root = root
@@ -86,29 +86,35 @@ class BaseShrecDataset(data.Dataset):
 
         if is_train:
             self.render_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
+                tvtf.RandomHorizontalFlip(p=0.25),
+                tvtf.RandomRotation(5, fill=255),
                 tvtf.ToTensor(),
                 tvtf.Normalize(mean=[0.485, 0.456, 0.406],
                                std=[0.229, 0.224, 0.225]),
             ])
 
             self.mask_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
             ])
         else:
             self.render_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
                 tvtf.ToTensor(),
                 tvtf.Normalize(mean=[0.485, 0.456, 0.406],
                                std=[0.229, 0.224, 0.225]),
             ])
 
             self.mask_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
             ])
 
         if vis:
@@ -131,7 +137,7 @@ class BaseShrecDataset(data.Dataset):
     def collate_fn(self, batch):
         raise NotImplementedError
 
-class SHREC23_Rings_RenderOnly_ImageQuery(BaseShrecDataset):
+class SHREC23_Rings_RenderOnly_ImageQuery(BaseRingsDataset):
     def __getitem__(self, i):
         data = self.data[i]['render']
         obj_id = self.csv_data.iloc[i]['obj_id']
@@ -148,25 +154,44 @@ class SHREC23_Rings_RenderOnly_ImageQuery(BaseShrecDataset):
             ]).unsqueeze(0)
             for views in data
         ])
-        return {
-            "object_im": ims,
-            "query_im": query_im,
-            "gallery_id": obj_id,
-            "query_id": skt_id,
-        }
+        if self.has_cls:
+            cls = self.csv_data.iloc[i]['class']
+            return {
+                "object_im": ims,
+                "query_im": query_im,
+                "gallery_id": obj_id,
+                "query_id": skt_id,
+                "class": cls,
+            }
+        else:
+            return {
+                "object_im": ims,
+                "query_im": query_im,
+                "gallery_id": obj_id,
+                "query_id": skt_id
+            }
 
     def collate_fn(self, batch):
-        batch_dict = {
-            "object_ims": torch.stack([x['object_im'] for x in batch]),
-            "query_ims": torch.stack([x['query_im'] for x in batch]),
-            "gallery_ids": [x['gallery_id'] for x in batch],
-            "query_ids": [x['query_id'] for x in batch],
-        }
+        if self.has_cls:
+            batch_dict = {
+                "object_ims": torch.stack([x['object_im'] for x in batch]),
+                "query_ims": torch.stack([x['query_im'] for x in batch]),
+                "gallery_ids": [x['gallery_id'] for x in batch],
+                "query_ids": [x['query_id'] for x in batch],
+                "classes": torch.LongTensor([x['class'] for x in batch]),
+            }
+        else:
+            batch_dict = {
+                "object_ims": torch.stack([x['object_im'] for x in batch]),
+                "query_ims": torch.stack([x['query_im'] for x in batch]),
+                "gallery_ids": [x['gallery_id'] for x in batch],
+                "query_ids": [x['query_id'] for x in batch]
+            }
         return batch_dict
 
 
 
-class SHREC23_Rings_RenderOnly_TextQuery(BaseShrecDataset):
+class SHREC23_Rings_RenderOnly_TextQuery(BaseRingsDataset):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
@@ -238,29 +263,33 @@ class SHREC23_Test_Rings_Objects(data.Dataset):
 
         if is_train:
             self.render_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
                 tvtf.ToTensor(),
                 tvtf.Normalize(mean=[0.485, 0.456, 0.406],
                                std=[0.229, 0.224, 0.225]),
             ])
 
             self.mask_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
             ])
         else:
             self.render_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
                 tvtf.ToTensor(),
                 tvtf.Normalize(mean=[0.485, 0.456, 0.406],
                                std=[0.229, 0.224, 0.225]),
             ])
 
             self.mask_transforms = tvtf.Compose([
-                tvtf.CenterCrop((352, 352)),
-                tvtf.Resize((224, 224)),
+                # tvtf.CenterCrop((352, 352)),
+                # tvtf.Resize((224, 224)),
+                tvtf.Resize((256, 256)),
             ])
 
         if vis:

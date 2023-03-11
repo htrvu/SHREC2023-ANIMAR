@@ -7,7 +7,7 @@ import os
 
 def find_obj(arr):
    xmin, ymin, xmax, ymax = float('inf'), float('inf'), -1, -1
-   list_pos =  np.argwhere(arr < 255)
+   list_pos =  np.argwhere(arr < 127.5)
    for pos in list_pos:
         i, j = pos[0], pos[1]
         ymax = max(i, ymax)

@@ -145,14 +145,16 @@ class MLP(nn.Module):
         # mlp = 4 layers, feature_dim -> feature_dim / 2 -> feature_dim / 4 -> latent_dim
         if shrink:
             self.mlp = nn.Sequential(
+                nn.Dropout(0.2),
                 nn.Linear(self.feature_dim, self.feature_dim // 2),
                 nn.ReLU(),
-                nn.Linear(self.feature_dim // 2, self.feature_dim // 4),
-                nn.ReLU(),
-                nn.Linear(self.feature_dim // 4, latent_dim),
+                # nn.Linear(self.feature_dim // 2, self.feature_dim // 4),
+                # nn.ReLU(),
+                nn.Linear(self.feature_dim // 2, latent_dim),
             )
         else:
             self.mlp = nn.Sequential(
+                nn.Dropout(0.2),
                 nn.Linear(self.feature_dim, int(self.feature_dim * 1.25)),
                 nn.ReLU(),
                 nn.Linear(int(self.feature_dim * 1.25), int(self.feature_dim * 2.5)),
