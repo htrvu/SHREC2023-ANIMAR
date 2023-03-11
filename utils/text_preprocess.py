@@ -43,7 +43,7 @@ def trunc_verb(text):
     tmp=text.split()
     try:
         index = tmp.index('is')
-        tmp=tmp[:index+2]
+        tmp=tmp[index-2:index]
         text=' '.join(tmp)
     except:
         pass
@@ -86,7 +86,7 @@ def preprocess(text):
     text=text_lowercase(text)
     #text=convert_number(text)
     text=remove_punctuation(text)
-    text=double_obj(text)
+    #text=double_obj(text)
     text=trunc_verb(text)
     text=remove_stopwords(text)
     text=lemmatize_word(text)
@@ -97,6 +97,7 @@ def synonym_augmented(text):
         'peacock':['peafowl','peahens'],
         #'warthog':['pig', 'boar','sow'],
         'turtle:':['terrapin','tortoise'],
+        '':['female','male','black','grey','indian','white','japanese','australian']
     }
     for i in sym:
         for j in sym[i]:
