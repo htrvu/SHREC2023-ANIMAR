@@ -88,7 +88,7 @@ class BaseRingsDataset(data.Dataset):
                 # tvtf.Resize((224, 224)),
                 tvtf.Resize((256, 256)),
                 tvtf.RandomHorizontalFlip(p=0.25),
-                tvtf.RandomRotation(5),
+                tvtf.RandomRotation(5, fill=255),
                 tvtf.ToTensor(),
                 tvtf.Normalize(mean=[0.485, 0.456, 0.406],
                                std=[0.229, 0.224, 0.225]),
