@@ -34,7 +34,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--pcl-model', type=str,
                     default='curvenet', choices=['curvenet', 'pointmlp', 'pointmlpelite'], help='Model for point cloud feature extraction')
 parser.add_argument('--text-model', type=str,
-                    default='bert-base-uncased', help='Model for text feature extraction')
+                    default='distilbert-base-uncased', help='Model for text feature extraction')
 parser.add_argument('--obj-data-path', type=str,
                     required=True, help='Path to 3D objects folder')
 parser.add_argument('--train-csv-path', type=str, required=True,

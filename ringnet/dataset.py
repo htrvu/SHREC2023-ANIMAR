@@ -169,8 +169,8 @@ class SHREC23_Rings_RenderOnly_ImageQuery(BaseShrecDataset):
 class SHREC23_Rings_RenderOnly_TextQuery(BaseShrecDataset):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        #self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-        self.tokenizer = CLIPTokenizer.from_pretrained("openai/clip-vit-base-patch32")
+        self.tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+        #self.tokenizer = CLIPTokenizer.from_pretrained("openai/clip-vit-base-patch32")
 
         
                  

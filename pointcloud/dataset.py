@@ -163,7 +163,7 @@ class SHREC23_PointCloudData_TextQuery(data.Dataset):
                 tvtf.Normalize(mean=[0.485, 0.456, 0.406],
                                std=[0.229, 0.224, 0.225]),
             ])
-        self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+        self.tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
 
     def __len__(self):
         return len(self.ids)

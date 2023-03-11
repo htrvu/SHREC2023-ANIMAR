@@ -47,8 +47,8 @@ class SHREC23_Test_TextData(data.Dataset):
         self.ids = self.csv_data.index
         
         
-        #self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-        self.tokenizer = CLIPTokenizer.from_pretrained("openai/clip-vit-base-patch32")
+        self.tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+        #self.tokenizer = CLIPTokenizer.from_pretrained("openai/clip-vit-base-patch32")
 
             
     def __len__(self):

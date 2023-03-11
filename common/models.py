@@ -54,6 +54,7 @@ class ClipTextExtractor(LanguageExtractor):
         )
         feature = transformer_out.last_hidden_state
         return feature
+    
 class ClipVisionExtractor(LanguageExtractor):
     arch = ['openai/clip-vit-base-patch32']
     def __init__(self, version='openai/clip-vit-base-patch32', use_pretrained=True, is_frozen=False):

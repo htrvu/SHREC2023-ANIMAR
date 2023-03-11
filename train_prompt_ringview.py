@@ -17,8 +17,8 @@ from utils.plot_logs import plot_logs
 
 '''
 python train_prompt_ringview.py \
-    --view-cnn-backbone openai/clip-vit-base-patch32 \
-    --text-model openai/clip-vit-base-patch32 \
+    --view-cnn-backbone efficientnet_b2 \
+    --text-model distilbert-base-uncased \
     --rings-path data/TextANIMAR2023/3D_Model_References/generated_sketches \
     --used-rings 3,4 \
     --train-csv-path data/csv/train_tex.csv \
@@ -38,7 +38,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--view-cnn-backbone', type=str, default='efficientnet_b2',
                     choices=[*ResNetExtractor.arch.keys(), *EfficientNetExtractor.arch.keys(),*ClipVisionExtractor.arch],  help='Model for ringview feature extraction')
 parser.add_argument('--text-model', type=str,
-                    default='bert-base-uncased', help='Model for text feature extraction')
+                    default='distilbert-base-uncased', help='Model for text feature extraction')
 parser.add_argument('--rings-path', type=str, required=True,
                     help='Path to parent folder of ringviews')
 parser.add_argument('--used-rings', type=str,
@@ -117,10 +117,8 @@ obj_embedder = MLP(obj_extractor, latent_dim=latent_dim).to(device)
 # Query model extractor
 if args.text_model.startswith('openai'):
     query_extractor = ClipTextExtractor(version=args.text_model,is_frozen=True) # OOM, so freeze for baseline
-elif args.text_model.startswith('bert'):
-    query_extractor = BertExtractor(version=args.text_model,is_frozen=True) 
 else:
-    raise NotImplementedError
+    query_extractor = BertExtractor(version=args.text_model,is_frozen=True) 
 query_embedder = MLP(query_extractor,latent_dim=latent_dim).to(device)
 
 # Data loader
