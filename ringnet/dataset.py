@@ -57,7 +57,7 @@ class BaseRingsDataset(data.Dataset):
         self.obj_ids = [x.split('.')[0] for x in self.obj_ids]
         self.skt_filenames = None if 'sket_filename' not in csv_data.columns else csv_data['sket_filename']
         self.tex = None if 'tex' not in csv_data.columns else csv_data['tex']
-
+        self.has_cls = 'class' in csv_data.columns
         assert self.skt_filenames is not None or self.tex is not None, 'Must provide either sketch or text'
 
         self.obj_root = root
@@ -140,7 +140,6 @@ class SHREC23_Rings_RenderOnly_ImageQuery(BaseRingsDataset):
         data = self.data[i]['render']
         obj_id = self.csv_data.iloc[i]['obj_id']
         skt_id = self.csv_data.iloc[i]['sketch_id']
-        cls = self.csv_data.iloc[i]['class']
         query_impath = self.skt_filenames[i]
         query_im = Image.open(os.path.join(self.skt_root, query_impath)).convert('RGB')
         query_im = self.render_transforms(query_im)
@@ -153,22 +152,39 @@ class SHREC23_Rings_RenderOnly_ImageQuery(BaseRingsDataset):
             ]).unsqueeze(0)
             for views in data
         ])
-        return {
-            "object_im": ims,
-            "query_im": query_im,
-            "gallery_id": obj_id,
-            "query_id": skt_id,
-            "class": cls,
-        }
+        if self.has_cls:
+            cls = self.csv_data.iloc[i]['class']
+            return {
+                "object_im": ims,
+                "query_im": query_im,
+                "gallery_id": obj_id,
+                "query_id": skt_id,
+                "class": cls,
+            }
+        else:
+            return {
+                "object_im": ims,
+                "query_im": query_im,
+                "gallery_id": obj_id,
+                "query_id": skt_id
+            }
 
     def collate_fn(self, batch):
-        batch_dict = {
-            "object_ims": torch.stack([x['object_im'] for x in batch]),
-            "query_ims": torch.stack([x['query_im'] for x in batch]),
-            "gallery_ids": [x['gallery_id'] for x in batch],
-            "query_ids": [x['query_id'] for x in batch],
-            "classes": torch.LongTensor([x['class'] for x in batch]),
-        }
+        if self.has_cls:
+            batch_dict = {
+                "object_ims": torch.stack([x['object_im'] for x in batch]),
+                "query_ims": torch.stack([x['query_im'] for x in batch]),
+                "gallery_ids": [x['gallery_id'] for x in batch],
+                "query_ids": [x['query_id'] for x in batch],
+                "classes": torch.LongTensor([x['class'] for x in batch]),
+            }
+        else:
+            batch_dict = {
+                "object_ims": torch.stack([x['object_im'] for x in batch]),
+                "query_ims": torch.stack([x['query_im'] for x in batch]),
+                "gallery_ids": [x['gallery_id'] for x in batch],
+                "query_ids": [x['query_id'] for x in batch]
+            }
         return batch_dict
 
 
