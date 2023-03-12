@@ -51,7 +51,7 @@ class ToTensor(object):
 
 def default_transforms():
     return transforms.Compose([
-                                SimpleSampler(1024),
+                                SimpleSampler(2 ** 15),
                                 PointCloudTranslate(),
                                 ToTensor(),
                               ])

@@ -275,7 +275,7 @@ class PosExtraction(nn.Module):
 
 
 class Model(nn.Module):
-    def __init__(self, points=1024, class_num=40, embed_dim=64, groups=1, res_expansion=1.0,
+    def __init__(self, points=2 ** 15, class_num=40, embed_dim=64, groups=1, res_expansion=1.0,
                  activation="relu", bias=True, use_xyz=True, normalize="center",
                  dim_expansion=[2, 2, 2, 2], pre_blocks=[2, 2, 2, 2], pos_blocks=[2, 2, 2, 2],
                  k_neighbors=[32, 32, 32, 32], reducers=[2, 2, 2, 2], **kwargs):
@@ -355,14 +355,14 @@ class Model(nn.Module):
         return x
 
 def PointMLP(device, num_classes=40, **kwargs) -> Model:
-    return Model(points=1024, class_num=num_classes, embed_dim=64, groups=1, res_expansion=1.0,
+    return Model(points=2 ** 15, class_num=num_classes, embed_dim=64, groups=1, res_expansion=1.0,
                    activation="relu", bias=False, use_xyz=False, normalize="anchor",
                    dim_expansion=[2, 2, 2, 2], pre_blocks=[2, 2, 2, 2], pos_blocks=[2, 2, 2, 2],
                    k_neighbors=[24, 24, 24, 24], reducers=[2, 2, 2, 2], **kwargs).to(device)
 
 
 def PointMLPElite(device, num_classes=40, **kwargs) -> Model:
-    return Model(points=1024, class_num=num_classes, embed_dim=32, groups=1, res_expansion=0.25,
+    return Model(points=2 ** 15, class_num=num_classes, embed_dim=32, groups=1, res_expansion=0.25,
                    activation="relu", bias=False, use_xyz=False, normalize="anchor",
                    dim_expansion=[2, 2, 2, 1], pre_blocks=[1, 1, 2, 1], pos_blocks=[1, 1, 2, 1],
                    k_neighbors=[24,24,24,24], reducers=[2, 2, 2, 2], **kwargs).to(device)
