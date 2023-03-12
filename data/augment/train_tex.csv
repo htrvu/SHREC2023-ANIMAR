@@ -285,10 +285,6 @@ d42e636946ade14e,f6b3b5289e2ccd94,d42e636946ade14e.obj,A great parrot is traveli
 2ad8b1381890d17a,f6b3b5289e2ccd94,2ad8b1381890d17a.obj,A great parrot is traveling between different branches.
 d265178183f1045a,f6b3b5289e2ccd94,d265178183f1045a.obj,A great parrot is traveling between different branches.
 c1db6aceadbe546f,f7df83f761acf4de,c1db6aceadbe546f.obj,A big sheep is walking to the shelter
-5a0331cd4017b611,faf6aaefb1d8cf61,5a0331cd4017b611.obj,A great cow is resting and lie down under the tree
-8061c9167e0cb731,faf6aaefb1d8cf61,8061c9167e0cb731.obj,A great cow is resting and lie down under the tree
-919317f18eaae8fd,faf6aaefb1d8cf61,919317f18eaae8fd.obj,A great cow is resting and lie down under the tree
-cb59eadac2b90db5,faf6aaefb1d8cf61,cb59eadac2b90db5.obj,A great cow is resting and lie down under the tree
 2accc11b14dde296,fc9dc8118f99c0de,2accc11b14dde296.obj,An Indian male elephant is sucking up water
 fe8ba017416507eb,fc9dc8118f99c0de,fe8ba017416507eb.obj,An Indian male elephant is sucking up water
 2268076b3b795a99,fc9dc8118f99c0de,2268076b3b795a99.obj,An Indian male elephant is sucking up water
@@ -304,7 +300,7 @@ ebb4e5b69643d4ab,754687fa7f45b78e,ebb4e5b69643d4ab.obj,An angry cat is in defens
 dcdd9defb7654a69,aaaaaaaaaaaaaaaa,dcdd9defb7654a69.obj,A flamingo is standing in the shade to take a rest
 3bbdb934e5cf5e7c,aaaaaaaaaaaaaaaa,3bbdb934e5cf5e7c.obj,A flamingo is standing in the shade to take a rest
 cc9d45414fb693d5,aaaaaaaaaaaaaaa1,cc9d45414fb693d5.obj,An ostrich is roaring to the predators
-2e86a3625d556854,aaaaaaaaaaaaaaa1,2e86a3625d556854.obj,An ostrich is roasting to the predators
+2e86a3625d556854,aaaaaaaaaaaaaaa1,2e86a3625d556854.obj,An ostrich is roaring to the predators
 50d1d60a07d09d83,aaaaaaaaaaaaaaa2,50d1d60a07d09d83.obj,A warthog with long snout is resting
 5d33d36a11ebf237,aaaaaaaaaaaaaaa2,5d33d36a11ebf237.obj,A warthog with long snout is resting
 1cb8783b0b728483,aaaaaaaaaaaaaaa3,1cb8783b0b728483.obj,A short fat cat with a long tail is resting
@@ -315,9 +311,29 @@ cc9d45414fb693d5,aaaaaaaaaaaaaaa1,cc9d45414fb693d5.obj,An ostrich is roaring to 
 03b5427c9cbad7df,aaaaaaaaaaaaaaa6,03b5427c9cbad7df.obj,A turtle is roaring
 0b98619a32548d8e,aaaaaaaaaaaaaaa6,0b98619a32548d8e.obj,A turtle is roaring
 aa182a1ca33fba10,aaaaaaaaaaaaaaa6,aa182a1ca33fba10.obj,A turtle is roaring
+1f356a5d5fbd0263,d3cba79fd0c49cc9,1f356a5d5fbd0263.obj,A seagull is soaring over the ocean
+f0b5c52cb89607ad,d3cba79fd0c49cc9,f0b5c52cb89607ad.obj,A seagull is soaring over the ocean
+cb3b53c236312a01,d3cba79fd0c49cc9,cb3b53c236312a01.obj,A seagull is soaring over the ocean
+a5391c778367ed6b,d3cba79fd0c49cc9,a5391c778367ed6b.obj,A seagull is soaring over the ocean
 ee5fdac79ee65b48,aaaaaaaaaaaaaaa7,ee5fdac79ee65b48.obj,A gorilla is standing and playing
+82c76d00ebd193b6,aaaaaaaaaaaaaaa7,82c76d00ebd193b6.obj,A gorilla is standing and playing
 f88ddb5d1e798ebc,aaaaaaaaaaaaaaa8,f88ddb5d1e798ebc.obj,A young buffalo is drinking
 f676e480e5f79f05,aaaaaaaaaaaaaaa8,f676e480e5f79f05.obj,A young buffalo is drinking
 03b5427c9cbad7df,aaaaaaaaaaaaaaa9,03b5427c9cbad7df.obj,A tortoise is angry
 0b98619a32548d8e,aaaaaaaaaaaaaaa9,0b98619a32548d8e.obj,A tortoise is angry
 aa182a1ca33fba10,aaaaaaaaaaaaaaa9,aa182a1ca33fba10.obj,A tortoise is angry
+8905f44a81dddb52,aaaaaaaaaaaaaaa10,8905f44a81dddb52.obj,An aardvark is resting
+b40605d93511756d,aaaaaaaaaaaaaaa10,b40605d93511756d.obj,An aardvark is resting
+86e6f532243c9e95,aaaaaaaaaaaaaaa11,86e6f532243c9e95.obj,A penguin is protecting
+ad790b0a529e2267,aaaaaaaaaaaaaaa11,ad790b0a529e2267.obj,A penguin is protecting
+bbdedc10be93fb6e,aaaaaaaaaaaaaaa11,bbdedc10be93fb6e.obj,A penguin is protecting
+4b433ec01cdaafff,aaaaaaaaaaaaaaa12,4b433ec01cdaafff.obj,A pangolin is moving for food
+3bd22b60871f3c97,aaaaaaaaaaaaaaa13,3bd22b60871f3c97.obj,A goose is standing by the lake
+9e89b018e25bd4ed,aaaaaaaaaaaaaaa13,9e89b018e25bd4ed.obj,A goose is standing by the lake
+12c2d1ff31beb7e9,aaaaaaaaaaaaaaa13,12c2d1ff31beb7e9.obj,A goose is standing by the lake
+43cfff6a23acafe7,aaaaaaaaaaaaaaa14,43cfff6a23acafe7.obj,A macaque is moving
+40e86f26ce8cc8eb,aaaaaaaaaaaaaaa14,40e86f26ce8cc8eb.obj,A macaque is moving
+868c9905d94ddb08,99c524559e0d5c24,868c9905d94ddb08.obj,A grey rhinoceros is feeding on grasses
+c0dcb96c756dbfc5,99c524559e0d5c24,c0dcb96c756dbfc5.obj,A grey rhinoceros is feeding on grasses
+6892964be383453f,99c524559e0d5c24,6892964be383453f.obj,A grey rhinoceros is feeding on grasses
+8f42f036627160ae,99c524559e0d5c24,8f42f036627160ae.obj,A grey rhinoceros is feeding on grasses

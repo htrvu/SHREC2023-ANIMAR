@@ -97,6 +97,11 @@ def synonym_augmented(text):
         'peacock':['peafowl','peahens'],
         #'warthog':['pig', 'boar','sow'],
         'turtle:':['terrapin','tortoise'],
+        'bonobo':['chimpanzee','macaque'],
+        'crocodile':['gharial'],
+        'hippopotamus':['hippo'],
+        'hogwart':['boar'],
+        'cheetah':['leopard'],
         '':['female','male','black','grey','indian','white','japanese','australian']
     }
     for i in sym:
