@@ -43,7 +43,7 @@ def trunc_verb(text):
     tmp=text.split()
     try:
         index = tmp.index('is')
-        tmp=tmp[index-2:index]
+        tmp=tmp[:index+2]
         text=' '.join(tmp)
     except:
         pass
@@ -105,4 +105,4 @@ def synonym_augmented(text):
     return text
 
 if __name__=='__main__':
-    print(preprocess('A young Indian peafowl is foraging for food on the ground'))
+    print(preprocess('A warthog with long snout is resting'))
