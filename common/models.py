@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from torchvision import models
 from transformers import AutoModel
 from sentence_transformers import SentenceTransformer, util
-from transformers import CLIPProcessor, CLIPTextModel,CLIPVisionModel
+from transformers import CLIPProcessor, CLIPTextModel,CLIPVisionModel, AutoProcessor
 
 class Extractor(nn.Module):
     def freeze(self):
@@ -16,6 +16,17 @@ class Extractor(nn.Module):
 
     def forward(self, x):
         return self.get_embedding(x)
+
+
+class ImageExtractor(Extractor):
+    def get_feature_map(self, x):
+        raise NotImplementedError
+
+    def get_embedding(self, x):
+        x = self.get_feature_map(x)
+        x = F.adaptive_avg_pool2d(x, (1, 1))
+        x = x.view(x.size(0), -1)
+        return x
 
 class LanguageExtractor(Extractor):
     def get_embedding(self, x):
@@ -59,29 +70,18 @@ class ClipVisionExtractor(LanguageExtractor):
     arch = ['openai/clip-vit-base-patch32']
     def __init__(self, version='openai/clip-vit-base-patch32', use_pretrained=True, is_frozen=False):
         super().__init__()
+        self.processor = AutoProcessor.from_pretrained(version)
         self.extractor = CLIPVisionModel.from_pretrained(version)
         self.feature_dim = self.extractor.config.hidden_size
         if is_frozen:
             self.freeze()
 
     def get_feature_map(self, x):
-        print(x)
-        input_ids, attention_mask = x["input_ids"], x["attention_mask"]
-        transformer_out = self.extractor(
-            input_ids=input_ids, attention_mask=attention_mask
-        )
+        images = [image for image in x]
+        x_processed = self.processor(images=images, return_tensors="pt").to(x.get_device())
+        transformer_out = self.extractor(**x_processed)
         feature = transformer_out.last_hidden_state
         return feature
-    
-class ImageExtractor(Extractor):
-    def get_feature_map(self, x):
-        raise NotImplementedError
-
-    def get_embedding(self, x):
-        x = self.get_feature_map(x)
-        x = F.adaptive_avg_pool2d(x, (1, 1))
-        x = x.view(x.size(0), -1)
-        return x
 
 class ResNetExtractor(ImageExtractor):
     arch = {
