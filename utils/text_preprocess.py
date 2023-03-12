@@ -43,7 +43,7 @@ def trunc_verb(text):
     tmp=text.split()
     try:
         index = tmp.index('is')
-        tmp=tmp[:index+2]
+        tmp=tmp[:index]
         text=' '.join(tmp)
     except:
         pass
@@ -102,7 +102,7 @@ def synonym_augmented(text):
         'hippopotamus':['hippo'],
         'hogwart':['boar'],
         'cheetah':['leopard'],
-        '':['female','male','black','grey','indian','white','japanese','australian']
+        '':['female','male','black','grey','indian','white','japanese','australian','american','african','western','juvenile']
     }
     for i in sym:
         for j in sym[i]:
