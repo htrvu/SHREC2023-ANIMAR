@@ -7,7 +7,7 @@ from pytorch_metric_learning.losses import NTXentLoss, CrossBatchMemory
 from common.dataset import SHREC23_Test_TextData
 from common.predict import predict
 
-from common.models import BertExtractor, MLP
+from common.models import BertExtractor, MLP, ClipTextExtractor
 from ringnet.dataset import SHREC23_Test_Rings_Objects
 from ringnet.models import Base3DObjectRingsExtractor
 
@@ -80,6 +80,10 @@ obj_extractor = Base3DObjectRingsExtractor(**obj_kwargs)
 
 ## For Text Extraction
 query_extractor = BertExtractor(arg_dict['text_model']) # OOM, so freeze for baseline
+if arg_dict['text_model'].startswith('openai'):
+    query_extractor = ClipTextExtractor(version=arg_dict['text_model'],is_frozen=True) # OOM, so freeze for baseline
+else:
+    query_extractor = BertExtractor(version=arg_dict['text_model'],is_frozen=True) 
 
 ## Apply weights
 ### For Object Extraction
