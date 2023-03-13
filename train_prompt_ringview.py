@@ -2,6 +2,7 @@ import argparse
 import json
 import os
 import torch
+import torch.nn as nn
 from torch.utils.data import DataLoader
 from pytorch_metric_learning.losses import NTXentLoss, CrossBatchMemory
 from torch.optim.lr_scheduler import StepLR
@@ -112,14 +113,18 @@ obj_extractor = Base3DObjectRingsExtractor(
     num_heads=args.num_heads,
     dropout=args.dropout,
 )
-obj_embedder = MLP(obj_extractor, latent_dim=latent_dim).to(device)
+obj_embedder = MLP(obj_extractor, latent_dim=latent_dim)
+obj_embedder= nn.DataParallel(obj_embedder)
+obj_embedder=obj_embedder.to(device)
 
 # Query model extractor
 if args.text_model.startswith('openai'):
     query_extractor = ClipTextExtractor(version=args.text_model,is_frozen=True) # OOM, so freeze for baseline
 else:
     query_extractor = BertExtractor(version=args.text_model,is_frozen=True) 
-query_embedder = MLP(query_extractor,latent_dim=latent_dim).to(device)
+query_embedder = MLP(query_extractor,latent_dim=latent_dim)
+query_embedder= nn.DataParallel(query_embedder)
+query_embedder=query_embedder.to(device)
 
 # Data loader
 
