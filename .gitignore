@@ -1,5 +1,7 @@
 __pycache__
 data/*
+!data/group-object/*.csv
+!data/group-object/*.json
 !data/*.ipynb
 !data/csv
 !data/augment

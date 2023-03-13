@@ -40,6 +40,8 @@ def convert_number(text):
     return temp_str
 
 def trunc_verb(text):
+    if 'roar' in text and 'angry' not in text:
+        text='angry '+text
     tmp=text.split()
     try:
         index = tmp.index('is')
@@ -90,7 +92,8 @@ def preprocess(text):
     text=trunc_verb(text)
     text=remove_stopwords(text)
     text=lemmatize_word(text)
-    text=synonym_augmented(text)
+    #text=synonym_augmented(text)
+    text=reorder(text)
     return text
 def synonym_augmented(text):
     sym={
@@ -108,6 +111,13 @@ def synonym_augmented(text):
         for j in sym[i]:
             text=text.replace(j,i)
     return text
-
+def reorder(text):
+    tmp=text.split()
+    lst=['female','male','juvenile']
+    for i in lst:
+        if i in tmp:
+            tmp.remove(i)
+            tmp.append(i)
+    return ' '.join(tmp)
 if __name__=='__main__':
-    print(preprocess('A warthog with long snout is resting'))
+    print(preprocess('A male African elephant is drinking and bathing in the river'))
