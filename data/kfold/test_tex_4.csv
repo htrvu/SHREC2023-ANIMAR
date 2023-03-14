@@ -1,69 +1,36 @@
 obj_id,text_id,obj_filename,tex
-ee348416503b399b,a154,ee348416503b399b.obj,bird
-86e6f532243c9e95,a88,86e6f532243c9e95.obj,king penguin male
-ad790b0a529e2267,a88,ad790b0a529e2267.obj,king penguin male
-08d73e04780a95a5,a49,08d73e04780a95a5.obj,african buffalo juvenile
-42e032de7218c164,a49,42e032de7218c164.obj,african buffalo juvenile
-e16916d53f03e59f,a49,e16916d53f03e59f.obj,african buffalo juvenile
-342d50ae23716421,a143,342d50ae23716421.obj,grizzly bear male
-8e05fa0fab7d7e0f,a143,8e05fa0fab7d7e0f.obj,grizzly bear male
-dd986bc1a049ef4b,a143,dd986bc1a049ef4b.obj,grizzly bear male
-b922cbe2403df658,a67,b922cbe2403df658.obj,giant panda female
-c9d2d69ecab50fcc,a67,c9d2d69ecab50fcc.obj,giant panda female
-d6f67448fad3e49d,a67,d6f67448fad3e49d.obj,giant panda female
-6f4322bbfcbf58b6,a22,6f4322bbfcbf58b6.obj,arctic wolf juvenile
-efc57137562e8eeb,a22,efc57137562e8eeb.obj,arctic wolf juvenile
-f45311b54d5d3fe4,a22,f45311b54d5d3fe4.obj,arctic wolf juvenile
-225def4a419b8f55,a14,225def4a419b8f55.obj,plains zebra male
-b55c36293cdb47bf,a14,b55c36293cdb47bf.obj,plains zebra male
-fbebaed970d04c62,a14,fbebaed970d04c62.obj,plains zebra male
-10c2e95fab328678,a124,10c2e95fab328678.obj,red panda male
-a1993557a877621a,a124,a1993557a877621a.obj,red panda male
-d0bc4cd0c3bc8ced,a124,d0bc4cd0c3bc8ced.obj,red panda male
-00beb632ff36011e,a179,00beb632ff36011e.obj,cat
-c44866f41c8768f3,a179,c44866f41c8768f3.obj,cat
-10436dc75a8fa9d4,a228,10436dc75a8fa9d4.obj,tibetan bear
-148342bfa8f41a31,a228,148342bfa8f41a31.obj,tibetan bear
-33fdb47f963804ae,a228,33fdb47f963804ae.obj,tibetan bear
-188f8079c7e8e65a,a69,188f8079c7e8e65a.obj,gray wolf
-26c8931736dc43fb,a69,26c8931736dc43fb.obj,gray wolf
-ffb83d7326fd48d9,a69,ffb83d7326fd48d9.obj,gray wolf
-0b98619a32548d8e,a152,0b98619a32548d8e.obj,galapagos giant tortoise male
-6fc741f92c03654d,a152,6fc741f92c03654d.obj,galapagos giant tortoise male
-aa182a1ca33fba10,a152,aa182a1ca33fba10.obj,galapagos giant tortoise male
-2721b9a1421f6599,a189,2721b9a1421f6599.obj,warthog juvenile
-49b1dcc1038c7d6a,a189,49b1dcc1038c7d6a.obj,warthog juvenile
-85a5e7457d06795b,a189,85a5e7457d06795b.obj,warthog juvenile
-0c9b5c0c7881583f,a83,0c9b5c0c7881583f.obj,springbok juvenile
-602f8d20449d6e58,a83,602f8d20449d6e58.obj,springbok juvenile
-c7c9add79b919256,a83,c7c9add79b919256.obj,springbok juvenile
-0cedfe3226dabe49,a8,0cedfe3226dabe49.obj,brown bear
-25eb316bfa00fc98,a8,25eb316bfa00fc98.obj,brown bear
-c484f391c112c70f,a8,c484f391c112c70f.obj,brown bear
-7160a4036bd716d3,a100,7160a4036bd716d3.obj,saltwater crocodile juvenile
-7160a4036bd716d3,a84,7160a4036bd716d3.obj,A cuviers dwarf caiman is resting
-88bf8bc923ad639b,a100,88bf8bc923ad639b.obj,saltwater crocodile juvenile
-88bf8bc923ad639b,a84,88bf8bc923ad639b.obj,A cuviers dwarf caiman is resting
-9f890fc4347f91b0,a100,9f890fc4347f91b0.obj,saltwater crocodile juvenile
-9f890fc4347f91b0,a84,9f890fc4347f91b0.obj,A cuviers dwarf caiman is resting
-1a418f85ca7808da,a212,1a418f85ca7808da.obj,thomsons gazelle juvenile
-99467c906f40a69f,a212,99467c906f40a69f.obj,thomsons gazelle juvenile
-d890aa3630d5e8b2,a212,d890aa3630d5e8b2.obj,thomsons gazelle juvenile
-2db0707188554ab9,a117,2db0707188554ab9.obj,canaan dog
-a635e529613c6c00,a117,a635e529613c6c00.obj,canaan dog
-ae93f2d3e0ab350d,a117,ae93f2d3e0ab350d.obj,canaan dog
-0ffc2d1991f4d1e4,a138,0ffc2d1991f4d1e4.obj,gharial male
-e505606f158f2955,a138,e505606f158f2955.obj,gharial male
-f764a508c643d067,a138,f764a508c643d067.obj,gharial male
-20fad05da21b0518,a185,20fad05da21b0518.obj,dog remeshed hunting
-8240c7ae34b9fcd0,a185,8240c7ae34b9fcd0.obj,dog remeshed hunting
-efa061e775cc76e0,a185,efa061e775cc76e0.obj,dog remeshed hunting
-3080f1b08986b040,a59,3080f1b08986b040.obj,black wildebeest male
-b660f7e5959a2ea0,a59,b660f7e5959a2ea0.obj,black wildebeest male
-f676e480e5f79f05,a59,f676e480e5f79f05.obj,black wildebeest male
-c43879676fbe4462,a145,c43879676fbe4462.obj,polar bear
-e478035ea7a63a88,a145,e478035ea7a63a88.obj,polar bear
-fb5c86ffdae2de70,a145,fb5c86ffdae2de70.obj,polar bear
+d52126f39607d7e5,a14,d52126f39607d7e5.obj,western lowland gorilla male
+d91ae5ac12f20fb9,a90,d91ae5ac12f20fb9.obj,australian_cattle_dog
+dbfad9e0971c6734,a91,dbfad9e0971c6734.obj,pygmy hippo male
+dcea5825436a03ca,a76,dcea5825436a03ca.obj,falcon
+dd986bc1a049ef4b,a110,dd986bc1a049ef4b.obj,grizzly bear male
+dfbb8fdd9be16fc6,a40,dfbb8fdd9be16fc6.obj,sable antelope male
+e0c5393e4f88864f,a43,e0c5393e4f88864f.obj,gray wolf
+e0f5cafb98d9acf7,a52,e0f5cafb98d9acf7.obj,nyala female
+e16916d53f03e59f,a36,e16916d53f03e59f.obj,african buffalo juvenile
+e448bfc8561b7f5b,a115,e448bfc8561b7f5b.obj,galapagos giant tortoise male
+e505606f158f2955,a105,e505606f158f2955.obj,gharial male
+e6e23a42e21d5d81,a140,e6e23a42e21d5d81.obj,common warthog juvenile
+e6ec065ce21bb1e9,a55,e6ec065ce21bb1e9.obj,springbok juvenile
+e74deefe0a3ad809,a6,e74deefe0a3ad809.obj,brown bear
+e84d5bcc733cb2c0,a23,e84d5bcc733cb2c0.obj,gull
+ea0a0d3cb57de45c,a125,ea0a0d3cb57de45c.obj,goat
+ea774de39e97e259,a73,ea774de39e97e259.obj,saltwater crocodile juvenile
+ef26ac0097ec03ab,a160,ef26ac0097ec03ab.obj,thomsons gazelle juvenile
+ef916ad12d81d484,a40,ef916ad12d81d484.obj,sable antelope male
+efa061e775cc76e0,a139,efa061e775cc76e0.obj,dog remeshed hunting
+f1089dcdf18fa0a2,a86,f1089dcdf18fa0a2.obj,canaan dog
+f1d410c5d6888311,a58,f1d410c5d6888311.obj,indian peafowl male
+f2e49e6309928b53,a105,f2e49e6309928b53.obj,gharial male
+f2fcaced04bd4f2e,a139,f2fcaced04bd4f2e.obj,dog remeshed hunting
+f40a50ef56006ab9,a98,f40a50ef56006ab9.obj,crow
+f676e480e5f79f05,a178,f676e480e5f79f05.obj,black wildebeest male
+f764a508c643d067,a105,f764a508c643d067.obj,gharial male
+f88ddb5d1e798ebc,a178,f88ddb5d1e798ebc.obj,black wildebeest male
+f8cbd24719bd2d25,a112,f8cbd24719bd2d25.obj,polar bear
+fb9353dc68b766dd,a123,fb9353dc68b766dd.obj,snow leopard female
+fbebaed970d04c62,a10,fbebaed970d04c62.obj,plains zebra male
+fca89dbdefa84fb9,a93,fca89dbdefa84fb9.obj,indian peafowl juvenile
 70c98f4c562affee,0534ec3a9103aa94,70c98f4c562affee.obj,A black goat is returning the shelter
 d7f91c8dd06833e0,0534ec3a9103aa94,d7f91c8dd06833e0.obj,A black goat is returning the shelter
 c53efb8e05ccafb5,0534ec3a9103aa94,c53efb8e05ccafb5.obj,A black goat is returning the shelter
