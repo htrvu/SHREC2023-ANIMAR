@@ -1,6 +1,7 @@
 __pycache__
 data/*
 data/group-object/data/
+!data/kfold/
 !data/group-object/
 !data/group-object/*.csv
 !data/group-object/*.json
