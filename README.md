@@ -1,7 +1,15 @@
 # SHREC2023 - Team TikTorch
 
-This repository contains the sources code of our team (Tiktorch) for track 2 and 3 of the [SHREC2023 challenge](https://www.shrec.net/), with the topic is **Sketch-based and Text-based 3D Animal Fine-Grained Retrieval**. We have achieved the **best performance team** in the both tracks with the following results:
+This repository contains the sources code of our team (Tiktorch) for track 2 and 3 of the [SHREC2023 challenge](https://www.shrec.net/), a competition that evaluates how well computer algorithms can recognize and retrieve 3D shapes based on different types of input, such as sketches or text description.
 
+<div>
+<p align="center">
+<img style='max-height: 400px' src='./images/architecture_text.png'>
+</p>
+<p align="center">Architecture for text-based (track 3)</p>
+</div>
+
+Our team achieved the best performance in both tracks for the topic of **Sketch-based and Text-based 3D Animal Fine-Grained Retrieval** with the following results:
 <table class="tg">
 <thead>
   <tr>
