@@ -4,9 +4,8 @@ This repository contains the sources code of our team (Tiktorch) for track 2 and
 
 <div>
 <p align="center">
-<img style='max-height: 400px' src='./images/architecture_text.png'>
+<img style='max-height: 200px' src='./images/shrec-track-2&3.png'>
 </p>
-<p align="center">Architecture for text-based (track 3)</p>
 </div>
 
 Our team achieved the best performance in both tracks for the topic of **Sketch-based and Text-based 3D Animal Fine-Grained Retrieval** with the following results:
