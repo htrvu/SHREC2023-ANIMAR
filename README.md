@@ -4,7 +4,7 @@ This repository contains the sources code of our team (Tiktorch) for track 2 and
 
 <div>
 <p align="center">
-<img style='max-height: 200px' src='./images/shrec-track-2&3.png'>
+<img src='./images/shrec-track-2&3.png' width="" height="400">
 </p>
 </div>
 
