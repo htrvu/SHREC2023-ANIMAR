@@ -1,0 +1,5 @@
+*_predict*
+*pyc*
+data/best_sketch_weights/*
+data/public_test/*
+data/sketch_data/*
